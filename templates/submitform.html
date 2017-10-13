@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Calendar Submission{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-offset-3 col-md-6">
+    <h3>Calendar Submission</h3>
+    {{ presenter }}
+
+    {% from "_formhelpers.html" import render_field %}
+
+    <form method="POST" action="{{ url_for('submitform') }}" role="form">
+
+      {{ form.hidden_tag() }}
+
+      {{ render_field(form.presenter, class="form-control") }}
+      {{ render_field(form.event, class="form-control") }}
+      {{ render_field(form.mtg_date, class="form-control") }}
+      {{ render_field(form.status, class="form-control") }}
+      <div class="row">
+        <div class="col-xs-8">
+          {{ render_field(form.city, class="form-control") }}
+        </div>
+        <div class="col-xs-4">
+          {{ render_field(form.state, class="form-control") }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4">
+        {{ render_field(form.mtg_time1, class="form-control") }}
+        </div>
+        <div class="col-xs-4">
+        {{ render_field(form.mtg_topic1, class="form-control") }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4">
+          {{ render_field(form.mtg_time2, class="form-control") }}
+        </div>
+        <div class="col-xs-4">
+          {{ render_field(form.mtg_topic2, class="form-control") }}
+        </div>
+      </div>
+      {{ render_field(form.notes, class="form-control") }}
+
+    <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

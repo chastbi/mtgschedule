@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Administration{% endblock %}
+
+{% block content %}
+  <h3>Add/Remove Presenters</h3>
+<p>
+  <h5>Active Presenters</h5>
+  {% for presenter in presenters %}
+  {% if presenter['active'] == True %}
+    {{ presenter['name'] }}<br/>
+  {% endif %}
+  {% endfor %}
+</p>
+<p>
+  <h5>Inactive Presenters</h5>
+  {% for presenter in presenters %}
+  {% if presenter['active'] == False %}
+    {{ presenter['name'] }}<br/>
+  {% endif %}
+  {% endfor %}
+</p>
+{% endblock %}

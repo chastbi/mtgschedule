@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Events List{% endblock %}
+
+{% block content %}
+<h3>{{ monthdates[3][3].year }} Meetings</h3>
+  <a href="{{ url_for('eventslist') }}/{{ lastmonth }}">Last Month</a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="{{ url_for('eventslist') }}/{{ nextmonth }}">Next Month</a><p>This will list all of the meetings in chronological ascending order.</p>
+  {% for event in schedule_dict %}
+    {{ event['mtg_date'] }}&nbsp;&nbsp;
+    {% if event['event'] %}{{ event['event'] }}
+    {% else %}{{ event['presenter'] }}
+    {% endif %}
+    &nbsp;&nbsp;{{ event['notes'] }}<br/>
+  {% endfor %}
+{% endblock %}

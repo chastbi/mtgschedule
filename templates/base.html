@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}{% endblock %}</title>
+   <!-- Bootstrap -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+
+<div class="navbar navbar-inverse" role="navigation"
+     style="background-color:rgb(150,21,29)">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle"
+              data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">PE Meetings</a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="{{ url_for('pubcal') }}">Public Calendar</a></li>
+        <li><a href="{{ url_for('wklyschedule') }}">Presenter Schedule</a></li>
+        <!--<li><a href="{{ url_for('eventslist') }}">Meetings List</a></li>-->
+        <!--<li><a href="{{ url_for('submitform') }}">Add Meeting</a></li>-->
+        <!--<li><a href="{{ url_for('admin') }}">Admin</a></li>-->
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-warning alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</div>
+</body>
+</html>

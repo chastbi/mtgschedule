@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Public Calendar{% endblock %}
+
+{% block content %}
+  <h3>{{ month_name[monthdates[3][3].month] }} {{ monthdates[3][3].year }} | Meeting Availability</h3>
+  |&nbsp;
+  {% for month in monthlinks %}
+    <a href="{{ url_for('pubcal') }}/{{ month }}">{{ month_name[month.month] }}</a>&nbsp;&nbsp;|
+  {% endfor %}
+  <table class="table table-bordered">
+    <tr style="font-weight: bold">
+    <td>Monday</td>
+    <td>Tuesday</td>
+    <td>Wednesday</td>
+    <td>Thursday</td>
+    <td>Friday</td>
+  </tr>
+    {% for week in monthdates %}
+    <tr style="font-size:11px">
+      {% for day in week %}
+      {% if day.weekday() != 5 and day.weekday() != 6 %}
+        <td>
+          <span style="font-weight:bold">{{ day.month}}/{{ day.day }}</span><br/>
+          {% if not presenters_avail[day] and not cities[day] %}
+          No Availability
+          {% else %}
+          Anywhere: {{ presenters_avail[day] }}<br/>
+          {% for date in cities %}
+            {% if date == day %}
+              {% for city in cities[day] %}
+              {{ city }}<br/>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+          {% endif %}
+
+        </td>
+      {% endif %}
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </table>
+
+{% endblock %}

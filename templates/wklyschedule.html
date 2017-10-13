@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Weekly Calendar{% endblock %}
+
+{% block content %}
+<h3>{{ month_name[weekcal[6].month] }} | Presenter Schedule</h3>
+|&nbsp;
+{% for month in monthlinks %}
+<a href="{{ url_for('wklyschedule') }}/{{ month }}">{{ month_name[month.month] }}</a>&nbsp;&nbsp;|
+{% endfor %}
+<p>
+  <br/>
+  |&nbsp;
+{% for week in weeks %}
+  <a href="{{ url_for('wklyschedule') }}/{{ week[1] }}">{{ week[1].month }}/{{ week[1].day }}</a>&nbsp;|
+{% endfor %}
+  &nbsp;&nbsp;
+<a href="{{ url_for('wklyschedule') }}/{{ lastwk }}">Last Week</a>
+&nbsp;&nbsp;
+<a href="{{ url_for('wklyschedule') }}/{{ nextwk }}">Next Week</a>
+</p>
+
+<table class="table table-bordered">
+  <tr style="font-weight: bold">
+    <td>{{ weekcal[3].year }}</td>
+    <td>Sunday, {{ weekcal[0].month }}/{{ weekcal[0].day }}</td>
+    <td>Monday,  {{ weekcal[1].month }}/{{ weekcal[1].day }}</td>
+    <td>Tuesday,  {{ weekcal[2].month }}/{{ weekcal[2].day }}</td>
+    <td>Wednesday,  {{ weekcal[3].month }}/{{ weekcal[3].day }}</td>
+    <td>Thursday,  {{ weekcal[4].month }}/{{ weekcal[4].day }}</td>
+    <td>Friday,  {{ weekcal[5].month }}/{{ weekcal[5].day }}</td>
+    <td>Saturday,  {{ weekcal[6].month }}/{{ weekcal[6].day }}</td>
+  </tr>
+  {% for presenter in presenters %}
+  <tr>
+    <td style="font-weight: bold">
+      {{ presenter.name }}
+    </td>
+    {% for day in range(0, 7) %}
+    {% set eventtoday = {'eventtoday' : False} %}
+    <td style="font-size:11px" style="display:block margin:-10em padding:10em overflow:hidden">
+      {% for event in events %}
+        {% if event.presenter == presenter.id and event.mtg_date == weekcal[day] %}
+          {% if eventtoday.update({'eventtoday' : True}) %}{% endif %}
+          <a href="{{ url_for('mtg_info') }}?mtgid={{ event.id }}">
+          <span style="color: Blue">{{ event.event }}</span><br/>
+          {% if event.city %}{{ event.city }},{% endif %}
+          {% if event.state %}{{ event.state }}<br/>{% endif %}
+          {% if event.mtg_time1 %}{{ event.mtg_time1 }}{% endif %}
+          {% if event.mtg_topic1 %}{{ event.mtg_topic1 }}<br/>{% endif %}
+          {% if event.mtg_time2 %}{{ event.mtg_time2 }}{% endif %}
+          {% if event.mtg_topic2 %}{{ event.mtg_topic2 }}<br/>{% endif %}
+          {% if event.notes %}{{ event.notes }}<br/>{% endif %}
+          {% if event.status %}<span style="color: Red">{{ event.status }}</span>{% endif %}
+          </a>
+        {% endif %}
+      {% endfor %}
+      {% if eventtoday['eventtoday'] == false %}
+      <a href="{{ url_for('submitform') }}?submitdate={{ weekcal[day] }}&presenter={{ presenter.name }}"
+      style="padding:20px 10px; display:block; text-decoration:none;">
+        &nbsp;
+      </a>
+      {% endif %}
+    </td>
+    {% endfor %}
+
+  </tr>
+  {% endfor %}
+</table>
+<p>
+  <a href="{{ url_for('add_presenter') }}">Add Presenter</a>
+</p>
+
+{% endblock%}
