@@ -10,22 +10,22 @@ def get_presenters():
     return presenter_dict
 
 
-def get_schedule(weekcal):
+def get_schedule(weekcal, hidestatus=None):
     '''
     returns a dictionary of one week's events within that occur within weekcal (used on weekly schedule)
     '''
-    events = Schedule.query.filter(Schedule.mtg_date.between(weekcal[0], weekcal[-1]))
+    events = Schedule.query.filter(Schedule.mtg_date.between(weekcal[0], weekcal[-1]), Schedule.status!=hidestatus).all()
     schedule_dict = [item.schedule_dict for item in events]
     return schedule_dict
 
 
-def get_month_events(monthcal):
+def get_month_events(monthcal, hidestatus=None, **kwargs):
     '''
     return events within a monthcal as a dictionary (used on pubcal.html)
     '''
     firstday = monthcal[0][0]
     lastday = monthcal[-1][-1]
-    events = Schedule.query.filter(Schedule.mtg_date.between(firstday, lastday))
+    events = Schedule.query.order_by(Schedule.mtg_date).filter(Schedule.mtg_date.between(firstday, lastday), Schedule.status!=hidestatus).filter_by(**kwargs).all()
     schedule_dict = [item.schedule_dict for item in events]
     return schedule_dict
 
@@ -42,18 +42,18 @@ def presenters_available(schedule_dict, monthdates):
     for presenter in presenters:
         unavail[presenter['name']] = []
     for event in schedule_dict:
-        presenterid = event['presenter']
-        presentername = get_presenter_name(presenterid, presenters)
-        today = event['mtg_date']
-        tomorrow = event['mtg_date'] + timedelta(days=1)
-        yesterday = event['mtg_date'] - timedelta(days=1)
-
-        if today not in unavail[presentername]:
-            unavail[presentername].append(today)
-        if tomorrow not in unavail[presentername]:
-            unavail[presentername].append(tomorrow)
-        if yesterday not in unavail[presentername]:
-            unavail[presentername].append(yesterday)
+        if event['presenter']:
+            presenterid = event['presenter']
+            presentername = get_presenter_name(presenterid, presenters)
+            today = event['mtg_date']
+            tomorrow = event['mtg_date'] + timedelta(days=1)
+            yesterday = event['mtg_date'] - timedelta(days=1)
+            if today not in unavail[presentername]:
+                unavail[presentername].append(today)
+            if tomorrow not in unavail[presentername]:
+                unavail[presentername].append(tomorrow)
+            if yesterday not in unavail[presentername]:
+                unavail[presentername].append(yesterday)
 
     '''create dictionary of monthdates with number of presenters available each day.  
     Hides next 31 days of results'''
@@ -87,12 +87,13 @@ def cities_available(schedule_dict, monthdates):
     for presenter in presenters:
         mtgday[presenter['name']] = []
     for event in schedule_dict:
-        presenterid = event['presenter']
-        presentername = get_presenter_name(presenterid, presenters)
-        today = event['mtg_date']
+        if event['presenter']:
+            presenterid = event['presenter']
+            presentername = get_presenter_name(presenterid, presenters)
+            today = event['mtg_date']
 
-        if today not in mtgday[presentername]:
-            mtgday[presentername].append(today)
+            if today not in mtgday[presentername]:
+                mtgday[presentername].append(today)
 
     '''
     creates dictionary of dates with available cities
@@ -102,27 +103,28 @@ def cities_available(schedule_dict, monthdates):
         for day in week:
             avail_cities[day] = []
     for event in schedule_dict:
-        presenterid = event['presenter']
-        presentername = get_presenter_name(presenterid, presenters)
-        city = event['city']
-        state = event['state']
-        location = city + ", " + state
-        day = event['mtg_date']
-        dayafter = day + timedelta(days=1)
-        day2after = day + timedelta(days=2)
-        daybefore = day - timedelta(days=1)
-        day2before = day - timedelta(days=2)
-        if dayafter not in mtgday[presentername] and day2after not in mtgday[presentername] and \
-                        dayafter >= date.today() + timedelta(days=31) and event['city'] != '':
-            avail_cities[dayafter].append(location)
-        if daybefore not in mtgday[presentername] and day2before not in mtgday[presentername] and \
-                        dayafter >= date.today() + timedelta(days=31) and event['city'] != '':
-            avail_cities[daybefore].append(location)
+        if event['presenter']:
+            presenterid = event['presenter']
+            presentername = get_presenter_name(presenterid, presenters)
+            city = event['city']
+            state = event['state']
+            location = city + ", " + state
+            day = event['mtg_date']
+            dayafter = day + timedelta(days=1)
+            day2after = day + timedelta(days=2)
+            daybefore = day - timedelta(days=1)
+            day2before = day - timedelta(days=2)
+            if dayafter not in mtgday[presentername] and day2after not in mtgday[presentername] and \
+                            dayafter >= date.today() + timedelta(days=31) and event['city'] != '':
+                avail_cities[dayafter].append(location)
+            if daybefore not in mtgday[presentername] and day2before not in mtgday[presentername] and \
+                            dayafter >= date.today() + timedelta(days=31) and event['city'] != '':
+                avail_cities[daybefore].append(location)
     return avail_cities
 
 
 def get_presenter_name(id, presenters):
-
+    presentername = {}
     '''
     returns a presenter name from presenter dictionary using the id
     '''
@@ -130,3 +132,11 @@ def get_presenter_name(id, presenters):
         if presenter['id'] == id:
             presentername = presenter['name']
     return presentername
+
+
+def presenter_dictionary(presenters):
+    dict = {}
+    for presenter in presenters:
+        dict[presenter['id']] = presenter['name']
+    return dict
+

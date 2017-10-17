@@ -3,15 +3,46 @@
 {% block title %}Events List{% endblock %}
 
 {% block content %}
-<h3>{{ monthdates[3][3].year }} Meetings</h3>
-  <a href="{{ url_for('eventslist') }}/{{ lastmonth }}">Last Month</a>
-  &nbsp;&nbsp;&nbsp;
-  <a href="{{ url_for('eventslist') }}/{{ nextmonth }}">Next Month</a><p>This will list all of the meetings in chronological ascending order.</p>
+<h3>{{ month_name[monthdates[3][3].month] }} {{ monthdates[3][3].year }} Meetings</h3>
+{% for month in monthlinks %}
+    <a href="{{ url_for('eventslist') }}/{{ month }}">{{ month_name[month.month] }}</a>&nbsp;&nbsp;|
+{% endfor %}<br/><br/>
+|&nbsp;
+<a href="{{ url_for('eventslist') }}/{{ lastmonth }}">Last Month</a>
+&nbsp;
+<a href="{{ url_for('eventslist') }}/{{ nextmonth }}">Next Month</a>
+&nbsp;||&nbsp;
+<a href="{{ url_for('eventslist') }}/{{ monthdates[2][3] }}">All</a>
+&nbsp;|&nbsp;
+<a href="{{ url_for('eventslist') }}/{{ monthdates[2][3] }}?status=Requested">Requested</a>
+&nbsp;|&nbsp;
+<a href="{{ url_for('eventslist') }}/{{ monthdates[2][3] }}?status=Date Reserved">Date Reserved</a>
+&nbsp;|&nbsp;
+<a href="{{ url_for('eventslist') }}/{{ monthdates[2][3] }}?status=Ready to Confirm">Ready to Confirm</a>
+&nbsp;|&nbsp;
+<a href="{{ url_for('eventslist') }}/{{ monthdates[2][3] }}?status=Confirmed">Confirmed</a>
+&nbsp;|&nbsp;
+<a href="{{ url_for('eventslist') }}/{{ monthdates[2][3] }}?status=Cancelled">Cancelled</a>
+&nbsp;|&nbsp;
+
+<p><br/>This will list all of the meetings in chronological ascending order.</p>
+<table class="table table-bordered">
+  <tr>
+    <td>Date</td>
+    <td>Client or Event</td>
+    <td>Presenter</td>
+    <td>Status</td>
+    <td>Notes</td>
+  </tr>
   {% for event in schedule_dict %}
-    {{ event['mtg_date'] }}&nbsp;&nbsp;
-    {% if event['event'] %}{{ event['event'] }}
-    {% else %}{{ event['presenter'] }}
-    {% endif %}
-    &nbsp;&nbsp;{{ event['notes'] }}<br/>
+  <tr>
+    <td>{{ event['mtg_date'] }}</td>
+    <td>{% if event['event'] %}{{ event['event'] }}{% endif %}</td>
+    <td>{% if event['presenter'] %}{{ presenters[event['presenter']] }}{% endif %}</td>
+    <td>{% if event['status'] %}{{ event['status'] }}{% endif %}</td>
+    <td>{{ event['notes'] }}</td>
+  </tr>
   {% endfor %}
+</table>
+
 {% endblock %}

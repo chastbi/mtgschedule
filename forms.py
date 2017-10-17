@@ -11,12 +11,12 @@ class MeetingForm(FlaskForm):
         return Presenter.query.all()
 
     presenter = QuerySelectField('Presenter', query_factory=lambda: Presenter.query.order_by(Presenter.name).all(),
-                                  get_label='name', allow_blank=False)
+                                  get_label='name', allow_blank=True)
     event = StringField('Client or Event')
     mtg_date = DateField('Date', format='%Y-%m-%d', default=date.today())
     status = SelectField('Status', choices=[('', ''), ('Requested', 'Requested'), ('Date Reserved', 'Date Reserved'),
                                             ('Ready to Confirm', 'Ready to Confirm'), ('Confirmed', 'Confirmed'),
-                                            ('Canceled', 'Canceled')])
+                                            ('Cancelled', 'Cancelled')])
     city = StringField('City')
     state = SelectField('State', choices=[('', ''), ('AL', 'AL'), ('AK', 'AK'), ('AZ', 'AZ'), ('AR', 'AR'),
                                         ('CA', 'CA'), ('CO', 'CO'), ('CT', 'CT'), ('DE', 'DE'), ('FL', 'FL'),

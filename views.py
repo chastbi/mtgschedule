@@ -2,7 +2,8 @@ from mtgschedule import app, db
 from flask import render_template, url_for, redirect, flash, request, session
 from mtgschedule.forms import MeetingForm, AddPresenter
 from mtgschedule.models import Schedule, Presenter
-from mtgschedule.functions import get_presenters, get_schedule, get_month_events, presenters_available, cities_available
+from mtgschedule.functions import get_presenters, get_schedule, get_month_events, presenters_available, cities_available,\
+    presenter_dictionary
 from mtgschedule.cal_functions import get_weekcal, monthdates_cal, monthsday1_list
 from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
@@ -35,7 +36,10 @@ def submitform():
         '''
         if request.form.get('mtgid') != "None":
             event = Schedule.query.filter_by(id=request.form.get('mtgid')).first()
-            event.presenter = form.presenter.data.id
+            if form.presenter.data:
+                event.presenter = form.presenter.data.id
+            else:
+                event.presenter = None
             event.event = form.event.data
             event.status = form.status.data
             event.mtg_date = form.mtg_date.data
@@ -86,6 +90,7 @@ def edit_event():
     id = request.args.get('id')
     event = Schedule.query.filter_by(id=id).first()
     presentername = Presenter.query.filter_by(id=event.presenter).first()
+
     form = MeetingForm(event=event.event, mtg_date=event.mtg_date, status=event.status, presenter=presentername,
                        city=event.city, state=event.state, mtg_time1=event.mtg_time1, mtg_time2=event.mtg_time2,
                        mtg_topic1=event.mtg_topic1, mtg_topic2=event.mtg_topic2, notes=event.notes)
@@ -117,7 +122,7 @@ def wklyschedule(date=None):
     monthlinks = monthsday1_list()
     presenters = get_presenters()
     weekcal = get_weekcal(yr, m, finddate)
-    schedule_dict = get_schedule(weekcal)
+    schedule_dict = get_schedule(weekcal, "Cancelled")
 
 
     return render_template("wklyschedule.html", weekcal=weekcal, presenters=presenters,
@@ -137,7 +142,7 @@ def pubcal(date=None):
 
     monthlinks = monthsday1_list()
     monthdates = monthdates_cal(yr, m)
-    schedule_dict = get_month_events(monthdates)
+    schedule_dict = get_month_events(monthdates,"Cancelled")
     available_presenters = presenters_available(schedule_dict, monthdates)
     available_cities = cities_available(schedule_dict, monthdates)
     return render_template("pubcal.html", monthdates=monthdates, presenters_avail=available_presenters,
@@ -153,15 +158,23 @@ def eventslist(date=None):
         finddate = datetime.today() + timedelta(days=90)
     yr = finddate.year
     m = finddate.month
+
     nextmnth = finddate + timedelta(days=28)
     nextmonth = nextmnth.date()
     lastmnth = finddate - timedelta(days=28)
     lastmonth = lastmnth.date()
-    presenters = get_presenters()
+    presenters = presenter_dictionary(get_presenters())
     monthdates = monthdates_cal(yr, m)
-    schedule_dict = get_month_events(monthdates)
-    return render_template("eventslist.html", monthdates=monthdates, nextmonth=nextmonth,
-                           lastmonth=lastmonth, schedule_dict=schedule_dict, presenters=presenters)
+    if request.args.get('status'):
+        status = request.args.get('status')
+        schedule_dict = get_month_events(monthdates, status=status)
+    else:
+        schedule_dict = get_month_events(monthdates)
+
+    monthlinks = monthsday1_list()
+
+    return render_template("eventslist.html", monthdates=monthdates, nextmonth=nextmonth, monthlinks=monthlinks,
+                           month_name=month_name, lastmonth=lastmonth, schedule_dict=schedule_dict, presenters=presenters)
 
 
 @app.route('/admin')
