@@ -1,5 +1,5 @@
 from mtgschedule import app, db
-from flask import render_template, url_for, redirect, flash, request
+from flask import render_template, url_for, redirect, flash, request, session
 from mtgschedule.forms import MeetingForm, AddPresenter
 from mtgschedule.models import Schedule, Presenter
 from mtgschedule.functions import get_presenters, get_schedule, get_month_events, presenters_available, cities_available
@@ -44,7 +44,10 @@ def submitform():
         db.session.flush()
         db.session.commit()
         flash('Calendar entry submitted.')
-        return redirect(url_for('wklyschedule'))
+        if session['lastdate']:
+            return redirect(url_for('wklyschedule') + "/" + session['lastdate'])
+        else:
+            return redirect(url_for('wklyschedule'))
 
 
     return render_template("submitform.html", form=form, error=error)
@@ -53,8 +56,10 @@ def submitform():
 @app.route('/wklyschedule')
 @app.route('/wklyschedule/<date>')
 def wklyschedule(date=None):
+    session['lastdate'] = None
     if date:
         finddate = datetime.strptime(date, "%Y-%m-%d")
+        session['lastdate'] = date
     else:
         finddate = datetime.today() + timedelta(days=90)
     yr = finddate.year
@@ -73,9 +78,11 @@ def wklyschedule(date=None):
     presenters = get_presenters()
     weekcal = get_weekcal(yr, m, finddate)
     schedule_dict = get_schedule(weekcal)
+
+
     return render_template("wklyschedule.html", weekcal=weekcal, presenters=presenters,
                            events=schedule_dict, nextwk=nextwk, lastwk=lastwk, nextmonth=nextmonth, lastmonth=lastmonth,
-                           monthlinks = monthlinks, month_name=month_name, weeks=weeks)
+                           monthlinks = monthlinks, month_name=month_name, weeks=weeks, lastdate=session['lastdate'])
 
 
 @app.route('/pubcal')
@@ -141,7 +148,10 @@ def delete_mtg():
     db.session.flush()
     db.session.commit()
     flash("Meeting Deleted")
-    return redirect(url_for('wklyschedule'))
+    if session['lastdate']:
+        return redirect(url_for('wklyschedule') + "/" + session['lastdate'])
+    else:
+        return redirect(url_for('wklyschedule'))
 
 
 @app.route('/addpresenter', methods=['GET', 'POST'])

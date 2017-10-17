@@ -44,8 +44,8 @@
           {% if eventtoday.update({'eventtoday' : True}) %}{% endif %}
           <a href="{{ url_for('mtg_info') }}?mtgid={{ event.id }}">
           <span style="color: Blue">{{ event.event }}</span><br/>
-          {% if event.city %}{{ event.city }},{% endif %}
-          {% if event.state %}{{ event.state }}<br/>{% endif %}
+          <span style="color: Green">{% if event.city %}{{ event.city }},{% endif %}
+          {% if event.state %}{{ event.state }}<br/>{% endif %}</span>
           {% if event.mtg_time1 %}{{ event.mtg_time1 }}{% endif %}
           {% if event.mtg_topic1 %}{{ event.mtg_topic1 }}<br/>{% endif %}
           {% if event.mtg_time2 %}{{ event.mtg_time2 }}{% endif %}
