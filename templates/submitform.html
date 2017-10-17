@@ -14,6 +14,8 @@
 
       {{ form.hidden_tag() }}
 
+      <input type="hidden" name="mtgid" value="{{ request.args.get('id') }}">
+
       {{ render_field(form.presenter, class="form-control") }}
       {{ render_field(form.event, class="form-control") }}
       {{ render_field(form.mtg_date, class="form-control") }}

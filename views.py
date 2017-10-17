@@ -4,7 +4,7 @@ from mtgschedule.forms import MeetingForm, AddPresenter
 from mtgschedule.models import Schedule, Presenter
 from mtgschedule.functions import get_presenters, get_schedule, get_month_events, presenters_available, cities_available
 from mtgschedule.cal_functions import get_weekcal, monthdates_cal, monthsday1_list
-from datetime import date, timedelta, datetime
+from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
 from calendar import month_name
 
@@ -17,6 +17,9 @@ def index():
 @app.route('/submitform', methods=['GET', 'POST'])
 def submitform():
     if request.method == 'GET' and request.args.get('presenter'):
+        '''
+        if page accessed from calendar, sets up prefill of presenter name and date
+        '''
         submitdate = datetime.strptime(request.values['submitdate'], "%Y-%m-%d")
         submitdate = submitdate.date()
         selectpresenter = Presenter.query.filter_by(name=request.values['presenter']).first()
@@ -27,6 +30,32 @@ def submitform():
         error = None
 
     if form.validate_on_submit():
+        '''
+        edits existing calendar events
+        '''
+        if request.form.get('mtgid') != "None":
+            event = Schedule.query.filter_by(id=request.form.get('mtgid')).first()
+            event.presenter = form.presenter.data.id
+            event.event = form.event.data
+            event.status = form.status.data
+            event.mtg_date = form.mtg_date.data
+            event.city = form.city.data
+            event.state = form.state.data
+            event.mtg_time = form.mtg_time1.data
+            event.mtg_time2 = form.mtg_time2.data
+            event.mtg_topic1 = form.mtg_topic1.data
+            event.mtg_topic2 = form.mtg_topic2.data
+            event.notes = form.notes.data
+            db.session.flush()
+            db.session.commit()
+
+            if session['lastdate']:
+                return redirect(url_for('wklyschedule') + "/" + session['lastdate'])
+            else:
+                return redirect(url_for('wklyschedule'))
+        '''
+        creates new calendar events
+        '''
         event = Schedule(
             form.presenter.data.id,
             form.event.data,
@@ -49,7 +78,18 @@ def submitform():
         else:
             return redirect(url_for('wklyschedule'))
 
+    return render_template("submitform.html", form=form, error=error)
 
+
+@app.route('/editevent')
+def edit_event():
+    id = request.args.get('id')
+    event = Schedule.query.filter_by(id=id).first()
+    presentername = Presenter.query.filter_by(id=event.presenter).first()
+    form = MeetingForm(event=event.event, mtg_date=event.mtg_date, status=event.status, presenter=presentername,
+                       city=event.city, state=event.state, mtg_time1=event.mtg_time1, mtg_time2=event.mtg_time2,
+                       mtg_topic1=event.mtg_topic1, mtg_topic2=event.mtg_topic2, notes=event.notes)
+    error = None
     return render_template("submitform.html", form=form, error=error)
 
 
@@ -136,12 +176,9 @@ def mtg_info():
     mrf = Schedule.query.filter_by(id=mtg_id).first()
     return render_template('mtginfo.html', mrf=mrf)
 
-@app.route('/editform')
-def edit_form():
-    return "Edit Form"
 
-@app.route('/deletemtg')
-def delete_mtg():
+@app.route('/delevent')
+def delete_event():
     mtgid = request.args.get('id')
     mtg = Schedule.query.filter_by(id=mtgid).first()
     db.session.delete(mtg)

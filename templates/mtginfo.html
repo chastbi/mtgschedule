@@ -13,9 +13,8 @@ Time/Topic1: {{ mrf.mtg_time1 }} {{ mrf.mtg_topic1 }}<br/>
 Time/Topic2: {{ mrf.mtg_time2 }} {{ mrf.mtg_topic2 }}<br/>
 Notes: {{ mrf.notes }}<br/>
 <p><br/>
-<a href="{{ url_for('edit_form')}}?id={{ mrf.id }}">edit</a>*
+<a href="{{ url_for('edit_event')}}?id={{ mrf.id }}">edit</a>
   &nbsp;|&nbsp;
-<a href="{{ url_for('delete_mtg')}}?id={{ mrf.id }}">delete</a>
+<a href="{{ url_for('delete_event')}}?id={{ mrf.id }}">delete</a>
 </p>
-*edit function is not built yet
 {% endblock %}
