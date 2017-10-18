@@ -1,5 +1,6 @@
 from mtgschedule import app, db
 from flask import render_template, url_for, redirect, flash, request, session
+from mtgschedule.settings import NEW_MRF_URL
 from mtgschedule.forms import MeetingForm, AddPresenter
 from mtgschedule.models import Schedule, Presenter
 from mtgschedule.functions import get_presenters, get_schedule, get_month_events, presenters_available, cities_available,\
@@ -17,14 +18,17 @@ def index():
 
 @app.route('/submitform', methods=['GET', 'POST'])
 def submitform():
-    if request.method == 'GET' and request.args.get('presenter'):
+    if request.method == 'GET' and request.args.get('submitdate'):
         '''
         if page accessed from calendar, sets up prefill of presenter name and date
         '''
         submitdate = datetime.strptime(request.values['submitdate'], "%Y-%m-%d")
         submitdate = submitdate.date()
-        selectpresenter = Presenter.query.filter_by(name=request.values['presenter']).first()
-        form = MeetingForm(mtg_date=submitdate, presenter=selectpresenter)
+        if request.args.get('presenter'):
+            selectpresenter = Presenter.query.filter_by(name=request.values['presenter']).first()
+            form = MeetingForm(mtg_date=submitdate, presenter=selectpresenter)
+        else:
+            form = MeetingForm(mtg_date=submitdate)
         error = None
     else:
         form = MeetingForm()
@@ -149,7 +153,7 @@ def pubcal(date=None):
     available_presenters = presenters_available(schedule_dict, monthdates)
     available_cities = cities_available(schedule_dict, monthdates)
     return render_template("pubcal.html", monthdates=monthdates, presenters_avail=available_presenters,
-                           cities=available_cities, month_name=month_name, monthlinks=monthlinks)
+                           cities=available_cities, month_name=month_name, monthlinks=monthlinks, mrf_url=NEW_MRF_URL)
 
 
 @app.route('/eventslist')

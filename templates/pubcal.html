@@ -21,7 +21,10 @@
       {% for day in week %}
       {% if day.weekday() != 5 and day.weekday() != 6 %}
         <td>
-          <span style="font-weight:bold">{{ day.month}}/{{ day.day }}</span><br/>
+          <span style="font-weight:bold">{{ day.month}}/{{ day.day }}</span>
+          {% if presenters_avail[day] %}
+          &nbsp;<a href="{{ mrf_url }}?submitdate={{ day }}">Request</a>
+          {% endif %}<br/>
           {% if not presenters_avail[day] and not cities[day] %}
           No Availability
           {% else %}
