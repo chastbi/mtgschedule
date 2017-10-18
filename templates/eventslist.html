@@ -8,21 +8,22 @@
     <a href="{{ url_for('eventslist') }}/{{ month }}">{{ month_name[month.month] }}</a>&nbsp;&nbsp;|
 {% endfor %}<br/><br/>
 |&nbsp;
-<a href="{{ url_for('eventslist') }}/{{ lastmonth }}">Last Month</a>
-&nbsp;
-<a href="{{ url_for('eventslist') }}/{{ nextmonth }}">Next Month</a>
-&nbsp;||&nbsp;
 <a href="{{ url_for('eventslist') }}/{{ monthdates[2][3] }}">All</a>
 &nbsp;|&nbsp;
 <a href="{{ url_for('eventslist') }}/{{ monthdates[2][3] }}?status=Requested">Requested</a>
+({{ statuscount['Requested'] }})
 &nbsp;|&nbsp;
 <a href="{{ url_for('eventslist') }}/{{ monthdates[2][3] }}?status=Date Reserved">Date Reserved</a>
+({{ statuscount['Date Reserved'] }})
 &nbsp;|&nbsp;
 <a href="{{ url_for('eventslist') }}/{{ monthdates[2][3] }}?status=Ready to Confirm">Ready to Confirm</a>
+({{ statuscount['Ready to Confirm'] }})
 &nbsp;|&nbsp;
 <a href="{{ url_for('eventslist') }}/{{ monthdates[2][3] }}?status=Confirmed">Confirmed</a>
+({{ statuscount['Confirmed'] }})
 &nbsp;|&nbsp;
 <a href="{{ url_for('eventslist') }}/{{ monthdates[2][3] }}?status=Cancelled">Cancelled</a>
+({{ statuscount['Cancelled'] }})
 &nbsp;|&nbsp;
 
 <p><br/>This will list all of the meetings in chronological ascending order.</p>
@@ -36,7 +37,7 @@
   </tr>
   {% for event in schedule_dict %}
   <tr>
-    <td>{{ event['mtg_date'] }}</td>
+    <td><a href="{{ url_for('mtg_info') }}?mtgid={{ event['id'] }}">{{ event['mtg_date'] }}</a></td>
     <td>{% if event['event'] %}{{ event['event'] }}{% endif %}</td>
     <td>{% if event['presenter'] %}{{ presenters[event['presenter']] }}{% endif %}</td>
     <td>{% if event['status'] %}{{ event['status'] }}{% endif %}</td>

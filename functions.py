@@ -140,3 +140,15 @@ def presenter_dictionary(presenters):
         dict[presenter['id']] = presenter['name']
     return dict
 
+
+def status_count(schedule_dict):
+    '''
+    create and return a dictionary of items with qty of each item
+    '''
+    statuscount = {}
+    for event in schedule_dict:
+        statuscount[event['status']] = 0
+    for event in schedule_dict:
+        statuscount[event['status']] += 1
+
+    return statuscount

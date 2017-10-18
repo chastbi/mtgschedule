@@ -4,14 +4,14 @@
 
 {% block content %}
 <h3>Meeting Info.</h3>
-Client: {{ mrf.event }}<br/>
-Date: {{ mrf.mtg_date }}<br/>
-Status: {{ mrf.status }}<br/>
-Presenter: {{ mrf.presenter }}<br/>
-City, State: {{ mrf.city }}, {{ mrf.state }}<br/>
-Time/Topic1: {{ mrf.mtg_time1 }} {{ mrf.mtg_topic1 }}<br/>
-Time/Topic2: {{ mrf.mtg_time2 }} {{ mrf.mtg_topic2 }}<br/>
-Notes: {{ mrf.notes }}<br/>
+{{ mrf.event }}<br/>
+{{ mrf.mtg_date }}<br/>
+{{ mrf.status }}<br/>
+{{ presenter[mrf.presenter] }}<br/>
+{{ mrf.city }}, {{ mrf.state }}<br/>
+{{ mrf.mtg_time1 }} {{ mrf.mtg_topic1 }}<br/>
+{{ mrf.mtg_time2 }} {{ mrf.mtg_topic2 }}<br/>
+{{ mrf.notes }}<br/>
 <p><br/>
 <a href="{{ url_for('edit_event')}}?id={{ mrf.id }}">edit</a>
   &nbsp;|&nbsp;

@@ -3,7 +3,7 @@ from flask import render_template, url_for, redirect, flash, request, session
 from mtgschedule.forms import MeetingForm, AddPresenter
 from mtgschedule.models import Schedule, Presenter
 from mtgschedule.functions import get_presenters, get_schedule, get_month_events, presenters_available, cities_available,\
-    presenter_dictionary
+    presenter_dictionary, status_count
 from mtgschedule.cal_functions import get_weekcal, monthdates_cal, monthsday1_list
 from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
@@ -60,8 +60,12 @@ def submitform():
         '''
         creates new calendar events
         '''
+        if form.presenter.data:
+            presenterid = form.presenter.data.id
+        else:
+            presenterid = None
         event = Schedule(
-            form.presenter.data.id,
+            presenterid,
             form.event.data,
             form.status.data,
             form.mtg_date.data,
@@ -124,7 +128,6 @@ def wklyschedule(date=None):
     weekcal = get_weekcal(yr, m, finddate)
     schedule_dict = get_schedule(weekcal, "Cancelled")
 
-
     return render_template("wklyschedule.html", weekcal=weekcal, presenters=presenters,
                            events=schedule_dict, nextwk=nextwk, lastwk=lastwk, nextmonth=nextmonth, lastmonth=lastmonth,
                            monthlinks = monthlinks, month_name=month_name, weeks=weeks, lastdate=session['lastdate'])
@@ -165,16 +168,21 @@ def eventslist(date=None):
     lastmonth = lastmnth.date()
     presenters = presenter_dictionary(get_presenters())
     monthdates = monthdates_cal(yr, m)
+    complete_mnth_schedule = get_month_events(monthdates)
     if request.args.get('status'):
         status = request.args.get('status')
         schedule_dict = get_month_events(monthdates, status=status)
     else:
-        schedule_dict = get_month_events(monthdates)
+        schedule_dict = complete_mnth_schedule
+
+    complete_mnth_schedule = get_month_events(monthdates)
+    statuscount = status_count(complete_mnth_schedule)
 
     monthlinks = monthsday1_list()
 
     return render_template("eventslist.html", monthdates=monthdates, nextmonth=nextmonth, monthlinks=monthlinks,
-                           month_name=month_name, lastmonth=lastmonth, schedule_dict=schedule_dict, presenters=presenters)
+                           month_name=month_name, lastmonth=lastmonth, schedule_dict=schedule_dict, presenters=presenters,
+                           statuscount=statuscount)
 
 
 @app.route('/admin')
@@ -185,9 +193,10 @@ def admin():
 
 @app.route('/mtginfo')
 def mtg_info():
+    presenters = presenter_dictionary(get_presenters())
     mtg_id = request.args.get('mtgid')
     mrf = Schedule.query.filter_by(id=mtg_id).first()
-    return render_template('mtginfo.html', mrf=mrf)
+    return render_template('mtginfo.html', mrf=mrf, presenter=presenters)
 
 
 @app.route('/delevent')
