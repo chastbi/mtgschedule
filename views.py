@@ -202,20 +202,18 @@ def eventslist(date=None):
     nextmonth = nextmnth.date()
     lastmnth = finddate - timedelta(days=28)
     lastmonth = lastmnth.date()
+    monthlinks = monthsday1_list()
     presenters = presenter_dictionary(get_presenters())
     monthdates = monthdates_cal(yr, m)
     complete_mnth_schedule = get_month_events(monthdates)
+    statuscount = status_count(complete_mnth_schedule)
+
     if request.args.get('status'):
         status = request.args.get('status')
         schedule_dict = get_month_events(monthdates, status=status)
     else:
         schedule_dict = complete_mnth_schedule
-
-    complete_mnth_schedule = get_month_events(monthdates)
-    statuscount = status_count(complete_mnth_schedule)
-
-    monthlinks = monthsday1_list()
-
+    print(monthdates)
     return render_template("eventslist.html", monthdates=monthdates, nextmonth=nextmonth, monthlinks=monthlinks,
                            month_name=month_name, lastmonth=lastmonth, schedule_dict=schedule_dict, presenters=presenters,
                            statuscount=statuscount)
