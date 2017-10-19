@@ -23,7 +23,7 @@
         <td>
           <span style="font-weight:bold">{{ day.month}}/{{ day.day }}</span>
           {% if presenters_avail[day] %}
-          &nbsp;<a href="{{ mrf_url }}?submitdate={{ day }}">Request</a>
+          &nbsp;<a href="{{ mrf_url }}">Request</a>
           {% endif %}<br/>
           {% if not presenters_avail[day] and not cities[day] %}
           No Availability

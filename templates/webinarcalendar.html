@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Webinar Calendar{% endblock %}
+
+{% block content %}
+|&nbsp;
+{% for month in monthlinks %}
+<a href="{{ url_for('webinarschedule') }}/{{ month }}">{{ month_name[month.month] }}</a>&nbsp;&nbsp;|
+{% endfor %}
+<p>
+  <br/>
+  |&nbsp;
+{% for week in weeks %}
+  <a href="{{ url_for('webinarschedule') }}/{{ week[1] }}">{{ week[1].month }}/{{ week[1].day }}</a>&nbsp;|
+{% endfor %}
+  &nbsp;&nbsp;
+<a href="{{ url_for('webinarschedule') }}/{{ lastwk }}">Last Week</a>
+&nbsp;&nbsp;
+<a href="{{ url_for('webinarschedule') }}/{{ nextwk }}">Next Week</a>
+</p>
+
+<table class="table table-bordered">
+  <tr style="font-weight: bold; background-color:LightSteelBlue">
+    <td>{{ weekcal[3].year }}</td>
+    <td>Sunday, {{ weekcal[0].month }}/{{ weekcal[0].day }}</td>
+    <td>Monday,  {{ weekcal[1].month }}/{{ weekcal[1].day }}</td>
+    <td>Tuesday,  {{ weekcal[2].month }}/{{ weekcal[2].day }}</td>
+    <td>Wednesday,  {{ weekcal[3].month }}/{{ weekcal[3].day }}</td>
+    <td>Thursday,  {{ weekcal[4].month }}/{{ weekcal[4].day }}</td>
+    <td>Friday,  {{ weekcal[5].month }}/{{ weekcal[5].day }}</td>
+    <td>Saturday,  {{ weekcal[6].month }}/{{ weekcal[6].day }}</td>
+  </tr>
+  {% for room in roomlist %}
+  <tr>
+    <td style="font-weight:bold; background-color:LightBlue;">
+      {{ room }}
+    </td>
+    {% for day in range(0,7) %}
+      {% if day == 6 or day == 0 %}
+    <td style="background-color:rgba(240,220,180,0.5);">
+      {% else %}
+    <td>
+    Webinars go here
+      {% endif %}
+    </td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+
+
+{% endblock %}

@@ -21,7 +21,7 @@
 </p>
 
 <table class="table table-bordered">
-  <tr style="font-weight: bold">
+  <tr style="font-weight: bold; background-color:LightSteelBlue">
     <td>{{ weekcal[3].year }}</td>
     <td>Sunday, {{ weekcal[0].month }}/{{ weekcal[0].day }}</td>
     <td>Monday,  {{ weekcal[1].month }}/{{ weekcal[1].day }}</td>
@@ -33,12 +33,16 @@
   </tr>
   {% for presenter in presenters %}
   <tr>
-    <td style="font-weight: bold">
+    <td style="font-weight: bold; background-color:LightBlue;">
       {{ presenter.name }}
     </td>
     {% for day in range(0, 7) %}
     {% set eventtoday = {'eventtoday' : False} %}
-    <td style="font-size:11px" style="display:block margin:-10em padding:10em overflow:hidden">
+    {% if day == 6 or day == 0 %}
+    <td style="font-size:11px; background-color:rgba(240,220,180,0.5)">
+    {% else %}
+    <td style="font-size:11px;">
+    {% endif %}
       {% for event in events %}
         {% if event.presenter == presenter.id and event.mtg_date == weekcal[day] %}
           {% if eventtoday.update({'eventtoday' : True}) %}{% endif %}

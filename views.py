@@ -137,6 +137,38 @@ def wklyschedule(date=None):
                            monthlinks = monthlinks, month_name=month_name, weeks=weeks, lastdate=session['lastdate'])
 
 
+@app.route('/webinarschedule')
+@app.route('/webinarschedule/<date>')
+def webinarschedule(date=None):
+    session['lastdate'] = None
+    if date:
+        finddate = datetime.strptime(date, "%Y-%m-%d")
+        session['lastdate'] = date
+    else:
+        finddate = datetime.today() + timedelta(days=90)
+    yr = finddate.year
+    m = finddate.month
+    nextweek = finddate + timedelta(days=7)
+    nextwk = nextweek.date()
+    lastweek = finddate - timedelta(days=7)
+    lastwk = lastweek.date()
+    nextmnth = finddate + relativedelta(months=1)
+    nextmonth = nextmnth.date()
+    lastmnth = finddate - relativedelta(months=1)
+    lastmonth = lastmnth.date()
+
+    weeks = monthdates_cal(yr, m)
+    monthlinks = monthsday1_list()
+    presenters = get_presenters()
+    weekcal = get_weekcal(yr, m, finddate)
+
+    roomlist = ["PA Main", "PA #2", "AZ Main", "AZ #2"]
+
+    return render_template("webinarcalendar.html", weekcal=weekcal, presenters=presenters, roomlist=roomlist,
+                           nextwk=nextwk, lastwk=lastwk, nextmonth=nextmonth, lastmonth=lastmonth,
+                           monthlinks = monthlinks, month_name=month_name, weeks=weeks, lastdate=session['lastdate'])
+
+
 @app.route('/pubcal')
 @app.route('/pubcal/<date>')
 def pubcal(date=None):
