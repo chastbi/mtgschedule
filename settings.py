@@ -13,6 +13,7 @@ NEW_MRF_URL="http://iigsp.vanguard.com/irps/pex/_layouts/FormServer.aspx?XsnLoca
             "MeetingRequestForms/Forms/template.xsn&SaveLocation=http://iigsp.vanguard.com/irps/pex/pemeeting/" \
             "MeetingRequestForms&ClientInstalled=true&Source=http://iigsp.vanguard.com/irps/pex/pemeeting/pages/" \
             "Home.aspx&OpenIn=Client"
+
 MRF_LIST="./mrfs/"
 
 PRESENTERS=[{'name':'Brad Chastain', 'site':'AZ'},

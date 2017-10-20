@@ -1,5 +1,6 @@
 import xmltodict, os
 from mtgschedule.settings import MRF_LIST
+from datetime import datetime
 
 
 def get_mrf_list():
@@ -22,12 +23,12 @@ def create_mrf_dict():
     creates an easier dictionary of mrf data to work with. contains only data needed for the schedules
     '''
     xmllist = get_mrf_list()
-    #print(xmllist)
     mrf_dict = {}
     for mrf, value in xmllist.items():
 
         mrf_dict[mrf] = {'clientname':value['my:ClientInfoGroup']['my:ClientName']['#text'],
-                         'date':value['my:MTGInfoGroup']['my:MtgDate']['#text'],
+                         'date':datetime.date(datetime.strptime(value['my:MTGInfoGroup']['my:MtgDate']['#text'],
+                                                                '%Y-%m-%d')),
                          'city':value['my:OnsiteInfoGrp']['my:City'],
                          'state':value['my:OnsiteInfoGrp']['my:State'],
                          'status':value['my:MTGGroup']['my:SchedulerStatus'],
@@ -41,10 +42,5 @@ def create_mrf_dict():
             newtopic = 'mtgtopic' + str(mtgcount)
             mrf_dict[mrf][newmtg] = timegroup['my:Times']['#text']
             mrf_dict[mrf][newtopic] = timegroup['my:MtgTopic']
-            #print(timegroup['my:Times']['#text'])
-            #print(mrf_dict[mrf])
-
     return mrf_dict
 
-print(create_mrf_dict())
-#create_mrf_dict()

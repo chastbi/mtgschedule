@@ -7,6 +7,7 @@ from mtgschedule.functions import get_presenters, get_schedule, get_month_events
     presenter_dictionary, status_count
 from mtgschedule.xml_functions import get_mrf_list, create_mrf_dict
 from mtgschedule.cal_functions import get_weekcal, monthdates_cal, monthsday1_list
+from mtgschedule.pubcal_functions import available_presenters, cities_available
 from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
 from calendar import month_name
@@ -190,11 +191,12 @@ def pubcal(date=None):
 
     monthlinks = monthsday1_list()
     monthdates = monthdates_cal(yr, m)
-    schedule_dict = get_month_events(monthdates,"Cancelled")
-    available_presenters = presenters_available(schedule_dict, monthdates)
-    available_cities = cities_available(schedule_dict, monthdates)
-    return render_template("pubcal.html", monthdates=monthdates, presenters_avail=available_presenters,
-                           cities=available_cities, month_name=month_name, monthlinks=monthlinks, mrf_url=NEW_MRF_URL)
+
+    availability = available_presenters(monthdates) #xml
+    cities = cities_available(monthdates)
+
+    return render_template("pubcal.html", monthdates=monthdates, availability=availability, cities=cities,
+                           month_name=month_name, monthlinks=monthlinks, mrf_url=NEW_MRF_URL)
 
 
 @app.route('/eventslist')
@@ -222,7 +224,6 @@ def eventslist(date=None):
         schedule_dict = get_month_events(monthdates, status=status)
     else:
         schedule_dict = complete_mnth_schedule
-    print(monthdates)
     return render_template("eventslist.html", monthdates=monthdates, nextmonth=nextmonth, monthlinks=monthlinks,
                            month_name=month_name, lastmonth=lastmonth, schedule_dict=schedule_dict, presenters=presenters,
                            statuscount=statuscount)

@@ -22,13 +22,22 @@
       {% if day.weekday() != 5 and day.weekday() != 6 %}
         <td>
           <span style="font-weight:bold">{{ day.month}}/{{ day.day }}</span>
-          <br/>
-          Anywhere: {{ availability[day] }}<br/>
-          {% if cities[day] %}
-            {% for city in cities[day] %}
+          {% if presenters_avail[day] %}
+          &nbsp;<a href="{{ mrf_url }}">Request</a>
+          {% endif %}<br/>
+          {% if not presenters_avail[day] and not cities[day] %}
+          No Availability
+          {% else %}
+          Anywhere: {{ presenters_avail[day] }}<br/>
+          {% for date in cities %}
+            {% if date == day %}
+              {% for city in cities[day] %}
               {{ city }}<br/>
-            {% endfor %}
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
           {% endif %}
+
         </td>
       {% endif %}
       {% endfor %}

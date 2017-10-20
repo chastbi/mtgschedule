@@ -1,5 +1,48 @@
 {% extends "base.html" %}
 
+
+{% macro presenter_rows(site) %}
+  {% for presenter in presenters %}
+      {% if presenter['site'] == site %}
+    <tr>
+      <td style="font-weight: bold; background-color:LightBlue;">
+        {{ presenter.name }}
+      </td>
+      {% for day in range(0, 7) %}
+      {% set eventtoday = {'eventtoday' : False} %}
+      {% if day == 6 or day == 0 %}
+      <td style="font-size:11px; background-color:rgba(240,220,180,0.5)">
+      {% else %}
+      <td style="font-size:11px;">
+      {% endif %}
+        {% for mrf in mrfs %}
+          {% if mrfs[mrf]['date'] == weekcal[day]
+            and mrfs[mrf]['presenter1'] == presenter['name'] %}
+            {{ mrfs[mrf]['clientname'] }}<br/>
+            {{ mrfs[mrf]['city'] }}, {{ mrf['state'] }}<br/>
+            {{ mrfs[mrf]['mtgtime1'] }} {{ mrfs[mrf]['mtgtopic1'] }}<br/>
+            {{ mrfs[mrf]['mtgtime2'] }} {{ mrfs[mrf]['mtgtopic2'] }}<br/>
+            {{ mrfs[mrf]['status'] }}
+            {% if eventtoday.update({'eventtoday' : True}) %}{% endif %}
+          {% endif %}
+        {% endfor %}
+        {% if eventtoday['eventtoday'] == false %}
+        <a href="{{ url_for('submitform') }}?submitdate={{ weekcal[day] }}&presenter={{ presenter.name }}"
+        style="padding:20px 10px; display:block; text-decoration:none;">
+          &nbsp;
+        </a>
+        {% endif %}
+      </td>
+      {% endfor %}
+
+    </tr>
+    {% endif %}
+  {% endfor %}
+{% endmacro %}
+
+
+
+
 {% block title %}Weekly Calendar{% endblock %}
 
 {% block content %}
@@ -31,40 +74,8 @@
     <td>Friday,  {{ weekcal[5].month }}/{{ weekcal[5].day }}</td>
     <td>Saturday,  {{ weekcal[6].month }}/{{ weekcal[6].day }}</td>
   </tr>
-  {% for presenter in presenters %}
-  <tr>
-    <td style="font-weight: bold; background-color:LightBlue;">
-      {{ presenter.name }}
-    </td>
-    {% for day in range(0, 7) %}
-    {% set eventtoday = {'eventtoday' : False} %}
-    {% if day == 6 or day == 0 %}
-    <td style="font-size:11px; background-color:rgba(240,220,180,0.5)">
-    {% else %}
-    <td style="font-size:11px;">
-    {% endif %}
-      {% for mrf in mrfs %}
-        {% if mrfs[mrf]['date'] == weekcal[day].strftime('%Y-%m-%d')
-          and mrfs[mrf]['presenter1'] == presenter['name'] %}
-          {{ mrfs[mrf]['clientname'] }}<br/>
-          {{ mrfs[mrf]['city'] }}, {{ mrfs[mrf]['state'] }}<br/>
-          {{ mrfs[mrf]['mtgtime1'] }} {{ mrfs[mrf]['mtgtopic1'] }}<br/>
-          {{ mrfs[mrf]['mtgtime2'] }} {{ mrfs[mrf]['mtgtopic2'] }}<br/>
-          {{ mrfs[mrf]['status'] }}
-          {% if eventtoday.update({'eventtoday' : True}) %}{% endif %}
-        {% endif %}
-      {% endfor %}
-      {% if eventtoday['eventtoday'] == false %}
-      <a href="{{ url_for('submitform') }}?submitdate={{ weekcal[day] }}&presenter={{ presenter.name }}"
-      style="padding:20px 10px; display:block; text-decoration:none;">
-        &nbsp;
-      </a>
-      {% endif %}
-    </td>
-    {% endfor %}
-
-  </tr>
-  {% endfor %}
+  {{ presenter_rows('PA') }}
+  {{ presenter_rows('AZ') }}
 </table>
 <p>
   <a href="{{ url_for('add_presenter') }}">Add Presenter</a>
