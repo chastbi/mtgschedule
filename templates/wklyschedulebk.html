@@ -43,16 +43,20 @@
     {% else %}
     <td style="font-size:11px;">
     {% endif %}
-      {% for mrf in mrfs %}
-        {% if mrf['my:MTGInfoGroup']['my:MtgDate']['#text'] == weekcal[day].strftime('%Y-%m-%d')
-          and mrf['my:MTGGroup']['my:Presenter1']['#text'] == presenter['name'] %}
-          {{ mrf['my:ClientInfoGroup']['my:ClientName']['#text'] }}<br/>
-          {{ mrf['my:OnsiteInfoGrp']['my:City'] }}, {{ mrf['my:OnsiteInfoGrp']['my:State'] }}<br/>
-          {% for timegroup in mrf['my:MTGRequestGroup']['my:MTGTimesGroup'] %}
-            {{ timegroup['my:Times']['#text'] }} {{ timegroup['my:MtgTopic'] }}<br/>
-          {% endfor %}
-          {{ mrf['my:MTGGroup']['my:SchedulerStatus'] }}
+      {% for event in events %}
+        {% if event.presenter == presenter.id and event.mtg_date == weekcal[day] %}
           {% if eventtoday.update({'eventtoday' : True}) %}{% endif %}
+          <a href="{{ url_for('mtg_info') }}?mtgid={{ event.id }}">
+          <span style="color: Blue">{{ event.event }}</span><br/>
+          <span style="color: Green">{% if event.city %}{{ event.city }},{% endif %}
+          {% if event.state %}{{ event.state }}<br/>{% endif %}</span>
+          {% if event.mtg_time1 %}{{ event.mtg_time1 }}{% endif %}
+          {% if event.mtg_topic1 %}{{ event.mtg_topic1 }}<br/>{% endif %}
+          {% if event.mtg_time2 %}{{ event.mtg_time2 }}{% endif %}
+          {% if event.mtg_topic2 %}{{ event.mtg_topic2 }}<br/>{% endif %}
+          {% if event.notes %}{{ event.notes }}<br/>{% endif %}
+          {% if event.status %}<span style="color: Red">{{ event.status }}</span>{% endif %}
+          </a>
         {% endif %}
       {% endfor %}
       {% if eventtoday['eventtoday'] == false %}

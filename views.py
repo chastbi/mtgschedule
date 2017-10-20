@@ -1,10 +1,11 @@
 from mtgschedule import app, db
 from flask import render_template, url_for, redirect, flash, request, session
-from mtgschedule.settings import NEW_MRF_URL
+from mtgschedule.settings import NEW_MRF_URL, PRESENTERS
 from mtgschedule.forms import MeetingForm, AddPresenter
 from mtgschedule.models import Schedule, Presenter
 from mtgschedule.functions import get_presenters, get_schedule, get_month_events, presenters_available, cities_available,\
     presenter_dictionary, status_count
+from mtgschedule.xml_functions import get_mrf_list
 from mtgschedule.cal_functions import get_weekcal, monthdates_cal, monthsday1_list
 from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
@@ -109,6 +110,9 @@ def edit_event():
 @app.route('/wklyschedule')
 @app.route('/wklyschedule/<date>')
 def wklyschedule(date=None):
+    '''
+    navigation
+    '''
     session['lastdate'] = None
     if date:
         finddate = datetime.strptime(date, "%Y-%m-%d")
@@ -121,20 +125,25 @@ def wklyschedule(date=None):
     nextwk = nextweek.date()
     lastweek = finddate - timedelta(days=7)
     lastwk = lastweek.date()
-    nextmnth = finddate + relativedelta(months=1)
-    nextmonth = nextmnth.date()
-    lastmnth = finddate - relativedelta(months=1)
-    lastmonth = lastmnth.date()
 
-    weeks = monthdates_cal(yr, m)
     monthlinks = monthsday1_list()
+
+    '''
+    calendar creation
+    '''
+    weeks = monthdates_cal(yr, m)
     presenters = get_presenters()
     weekcal = get_weekcal(yr, m, finddate)
-    schedule_dict = get_schedule(weekcal, "Cancelled")
 
-    return render_template("wklyschedule.html", weekcal=weekcal, presenters=presenters,
-                           events=schedule_dict, nextwk=nextwk, lastwk=lastwk, nextmonth=nextmonth, lastmonth=lastmonth,
-                           monthlinks = monthlinks, month_name=month_name, weeks=weeks, lastdate=session['lastdate'])
+    '''
+    load meetings
+    '''
+    schedule_dict = get_schedule(weekcal, "Cancelled") #sql
+    mrfs = get_mrf_list() #xml
+
+    return render_template("wklyschedule.html", weekcal=weekcal, presenters=PRESENTERS, events=schedule_dict,
+                           nextwk=nextwk, lastwk=lastwk, monthlinks=monthlinks, month_name=month_name, weeks=weeks,
+                           lastdate=session['lastdate'], mrfs=mrfs)
 
 
 @app.route('/webinarschedule')

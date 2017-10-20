@@ -9,7 +9,7 @@
     <a href="{{ url_for('pubcal') }}/{{ month }}">{{ month_name[month.month] }}</a>&nbsp;&nbsp;|
   {% endfor %}
   <table class="table table-bordered">
-    <tr style="font-weight: bold">
+    <tr style="font-weight: bold; background-color:LightSteelBlue">
     <td>Monday</td>
     <td>Tuesday</td>
     <td>Wednesday</td>
@@ -17,7 +17,7 @@
     <td>Friday</td>
   </tr>
     {% for week in monthdates %}
-    <tr style="font-size:11px">
+    <tr style="font-size:11px; background-color:rgba(240,220,180,0.5)">
       {% for day in week %}
       {% if day.weekday() != 5 and day.weekday() != 6 %}
         <td>
