@@ -44,14 +44,13 @@
     <td style="font-size:11px;">
     {% endif %}
       {% for mrf in mrfs %}
-        {% if mrf['my:MTGInfoGroup']['my:MtgDate']['#text'] == weekcal[day].strftime('%Y-%m-%d')
-          and mrf['my:MTGGroup']['my:Presenter1']['#text'] == presenter['name'] %}
-          {{ mrf['my:ClientInfoGroup']['my:ClientName']['#text'] }}<br/>
-          {{ mrf['my:OnsiteInfoGrp']['my:City'] }}, {{ mrf['my:OnsiteInfoGrp']['my:State'] }}<br/>
-          {% for timegroup in mrf['my:MTGRequestGroup']['my:MTGTimesGroup'] %}
-            {{ timegroup['my:Times']['#text'] }} {{ timegroup['my:MtgTopic'] }}<br/>
-          {% endfor %}
-          {{ mrf['my:MTGGroup']['my:SchedulerStatus'] }}
+        {% if mrfs[mrf]['date'] == weekcal[day].strftime('%Y-%m-%d')
+          and mrfs[mrf]['presenter1'] == presenter['name'] %}
+          {{ mrfs[mrf]['clientname'] }}<br/>
+          {{ mrfs[mrf]['city'] }}, {{ mrfs[mrf]['state'] }}<br/>
+          {{ mrfs[mrf]['mtgtime1'] }} {{ mrfs[mrf]['mtgtopic1'] }}<br/>
+          {{ mrfs[mrf]['mtgtime2'] }} {{ mrfs[mrf]['mtgtopic2'] }}<br/>
+          {{ mrfs[mrf]['status'] }}
           {% if eventtoday.update({'eventtoday' : True}) %}{% endif %}
         {% endif %}
       {% endfor %}

@@ -5,7 +5,7 @@ from mtgschedule.forms import MeetingForm, AddPresenter
 from mtgschedule.models import Schedule, Presenter
 from mtgschedule.functions import get_presenters, get_schedule, get_month_events, presenters_available, cities_available,\
     presenter_dictionary, status_count
-from mtgschedule.xml_functions import get_mrf_list
+from mtgschedule.xml_functions import get_mrf_list, create_mrf_dict
 from mtgschedule.cal_functions import get_weekcal, monthdates_cal, monthsday1_list
 from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
@@ -139,8 +139,8 @@ def wklyschedule(date=None):
     load meetings
     '''
     schedule_dict = get_schedule(weekcal, "Cancelled") #sql
-    mrfs = get_mrf_list() #xml
-
+    #mrfs = get_mrf_list() #xml
+    mrfs = create_mrf_dict()
     return render_template("wklyschedule.html", weekcal=weekcal, presenters=PRESENTERS, events=schedule_dict,
                            nextwk=nextwk, lastwk=lastwk, monthlinks=monthlinks, month_name=month_name, weeks=weeks,
                            lastdate=session['lastdate'], mrfs=mrfs)
