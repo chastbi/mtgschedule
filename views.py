@@ -1,6 +1,6 @@
 from mtgschedule import app, db
 from flask import render_template, url_for, redirect, flash, request, session
-from mtgschedule.settings import NEW_MRF_URL, PRESENTERS
+from mtgschedule.settings import NEW_MRF_URL, MRFS_URL, PRESENTERS
 from mtgschedule.forms import MeetingForm, AddPresenter
 from mtgschedule.models import Schedule, Presenter
 from mtgschedule.functions import get_presenters, get_month_events, presenter_dictionary, status_count
@@ -139,7 +139,7 @@ def wklyschedule(date=None):
     mrfs = create_mrf_dict() #xml
     return render_template("wklyschedule.html", weekcal=weekcal, presenters=PRESENTERS,
                            nextwk=nextwk, lastwk=lastwk, monthlinks=monthlinks, month_name=month_name, weeks=weeks,
-                           lastdate=session['lastdate'], mrfs=mrfs)
+                           lastdate=session['lastdate'], mrfs=mrfs, mrfs_url=MRFS_URL)
 
 
 @app.route('/webinarschedule')

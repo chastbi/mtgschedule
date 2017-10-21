@@ -14,10 +14,12 @@ NEW_MRF_URL="http://iigsp.vanguard.com/irps/pex/_layouts/FormServer.aspx?XsnLoca
             "MeetingRequestForms&ClientInstalled=true&Source=http://iigsp.vanguard.com/irps/pex/pemeeting/pages/" \
             "Home.aspx&OpenIn=Client"
 
-MRF_LIST="./mrfs/"
+MRFS_DIRECTORY= "./mrfs/"
+MRFS_URL = os.path.abspath(MRFS_DIRECTORY)
 
 PRESENTERS=[{'name':'Brad Chastain', 'site':'AZ'},
             {'name':'Dennis Hale', 'site':'AZ'},
             {'name':'Steve Roberts', 'site':'AZ'},
             {'name':'Andrew Crouch', 'site':'PA'},
-            {'name':'Michael Gozdowski', 'site':'PA'}]
+            {'name':'Michael Gozdowski', 'site':'PA'},
+            {'name':'Lourdes Nieves', 'site':'PA'}]

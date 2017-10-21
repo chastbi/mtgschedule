@@ -1,5 +1,5 @@
 import xmltodict, os
-from mtgschedule.settings import MRF_LIST
+from mtgschedule.settings import MRFS_DIRECTORY
 from datetime import datetime
 
 
@@ -8,8 +8,8 @@ def get_mrf_list():
     makes dictionary of all xml data from each mrf in a directory
     '''
     mrflist = {}
-    for filename in os.listdir(MRF_LIST):
-        mrfpath = os.path.join(MRF_LIST, filename)
+    for filename in os.listdir(MRFS_DIRECTORY):
+        mrfpath = os.path.join(MRFS_DIRECTORY, filename)
         with open(mrfpath) as fd:
             mrf = xmltodict.parse(fd.read())
         fd.close()

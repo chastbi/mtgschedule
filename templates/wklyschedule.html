@@ -5,7 +5,10 @@
   {% for presenter in presenters %}
       {% if presenter['site'] == site %}
     <tr>
-      <td style="font-weight: bold; background-color:LightBlue;">
+      <td style="font-weight: bold;
+        {% if site == 'PA' %} background-color:LightBlue;
+          {% else %} background-color:#c5ccd3;
+        {% endif %}">
         {{ presenter.name }}
       </td>
       {% for day in range(0, 7) %}
@@ -19,6 +22,7 @@
           {% if mrfs[mrf]['date'] == weekcal[day] %}
             {% if mrfs[mrf]['presenter1'] == presenter['name'] or
                 mrfs[mrf]['presenter2'] == presenter['name'] %}
+            <a href="file:///{{ mrfs_url }}/{{ mrf }}" >
             <span style="color:blue">{{ mrfs[mrf]['clientname'] }}</span><br/>
             <span style="color:green">{{ mrfs[mrf]['city'] }}, {{ mrfs[mrf]['state'] }}</span><br/>
             {{ mrfs[mrf]['mtgtime1'] }} {{ mrfs[mrf]['mtgtopic1'] }}<br/>
@@ -26,7 +30,11 @@
             {% if mrfs[mrf]['meetinglead'] %}
             <span style="color:grey">{{ mrfs[mrf]['meetinglead'] }} is ML</span><br/>
             {% endif %}
-            <span style="color:red">{{ mrfs[mrf]['status'] }}</span><br/>
+            <span style="color:red">{{ mrfs[mrf]['status'] }}</span>
+            </a>
+            <span style="float:right">
+            <a href="{{ url_for('submitform') }}?submitdate={{ weekcal[day] }}&presenter={{ presenter.name }}">+</a>
+            </span>
             {% if eventtoday.update({'eventtoday' : True}) %}{% endif %}
             {% endif %}
           {% endif %}
