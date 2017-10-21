@@ -15,7 +15,22 @@ def presenter_mtg_days(mrflist):
         mtg_days[presenter['name']] = []
 
     for mrf, values in mrflist.items():
-        mtg_days[values['presenter1']].append(values['date'])
+        try:
+            mtg_days[values['presenter1']].append(values['date'])
+        except:
+            pass
+        try:
+            mtg_days[values['presenter2']].append(values['date'])
+        except:
+            pass
+        try:
+            mtg_days[values['presenter3']].append(values['date'])
+        except:
+            pass
+        try:
+            mtg_days[values['presenter4']].append(values['date'])
+        except:
+            pass
     return mtg_days
 
 

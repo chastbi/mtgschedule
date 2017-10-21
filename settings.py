@@ -19,4 +19,5 @@ MRF_LIST="./mrfs/"
 PRESENTERS=[{'name':'Brad Chastain', 'site':'AZ'},
             {'name':'Dennis Hale', 'site':'AZ'},
             {'name':'Steve Roberts', 'site':'AZ'},
-            {'name':'Andrew Crouch', 'site':'PA'}]
+            {'name':'Andrew Crouch', 'site':'PA'},
+            {'name':'Michael Gozdowski', 'site':'PA'}]
