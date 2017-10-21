@@ -18,11 +18,11 @@
         {% for mrf in mrfs %}
           {% if mrfs[mrf]['date'] == weekcal[day]
             and mrfs[mrf]['presenter1'] == presenter['name'] %}
-            {{ mrfs[mrf]['clientname'] }}<br/>
-            {{ mrfs[mrf]['city'] }}, {{ mrf['state'] }}<br/>
+            <span style="color:blue">{{ mrfs[mrf]['clientname'] }}</span><br/>
+            <span style="color:green">{{ mrfs[mrf]['city'] }}, {{ mrfs[mrf]['state'] }}</span><br/>
             {{ mrfs[mrf]['mtgtime1'] }} {{ mrfs[mrf]['mtgtopic1'] }}<br/>
             {{ mrfs[mrf]['mtgtime2'] }} {{ mrfs[mrf]['mtgtopic2'] }}<br/>
-            {{ mrfs[mrf]['status'] }}
+            <span style="color:red">{{ mrfs[mrf]['status'] }}</span><br/>
             {% if eventtoday.update({'eventtoday' : True}) %}{% endif %}
           {% endif %}
         {% endfor %}

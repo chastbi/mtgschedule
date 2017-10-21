@@ -10,17 +10,7 @@ def presenter_mtg_days(mrflist):
 
     for presenter in PRESENTERS:
         mtg_days[presenter['name']] = []
-    '''
-    for mrf, values in mrflist.items():
-        today = values['date']
-        tomorrow = values['date'] + timedelta(days=1)  #this stuff needs moved to available presenters
-        yesterday = values['date'] - timedelta(days=1)
-        if today not in mtg_days[values['presenter1']]:
-            mtg_days[values['presenter1']].append(today)
-        if tomorrow not in mtg_days[values['presenter1']]:
-            mtg_days[values['presenter1']].append(tomorrow)
-        if yesterday not in mtg_days[values['presenter1']]:
-            mtg_days[values['presenter1']].append(yesterday)'''
+
 
     for mrf, values in mrflist.items():
         mtg_days[values['presenter1']].append(values['date'])
@@ -35,13 +25,24 @@ def available_presenters(cal):
     mrflist = create_mrf_dict()
     mtg_days = presenter_mtg_days(mrflist)
 
+    for mrf, values in mrflist.items():
+        today = values['date']
+        tomorrow = values['date'] + timedelta(days=1)
+        yesterday = values['date'] - timedelta(days=1)
+        if today not in mtg_days[values['presenter1']]:
+            mtg_days[values['presenter1']].append(today)
+        if tomorrow not in mtg_days[values['presenter1']]:
+            mtg_days[values['presenter1']].append(tomorrow)
+        if yesterday not in mtg_days[values['presenter1']]:
+            mtg_days[values['presenter1']].append(yesterday)
+
     for week in cal:
         for day in week:
             available_count[day] = qty_presenters
     for presenter, days in mtg_days.items():
         for day in days:
             # below if could be deleted if only mrf within the cal range is provided
-            if day in available_count.keys():
+            if day in available_count.keys() and day.weekday() != 5:  # prevents errors when not in range of month
                 available_count[day] -= 1
 
     return available_count
@@ -71,12 +72,12 @@ def cities_available(cal):
             daybefore = day - timedelta(days=1)
             day2before = day - timedelta(days=2)
             print(mtg_days)
-            if dayafter not in mtg_days[presenter1] and day2after not in mtg_days.keys() and \
+            if dayafter not in mtg_days[presenter1] and day2after not in mtg_days[presenter1] and \
                             dayafter >= date.today() + timedelta(days=31) and values['city'] != '':
                 # below if could be deleted if only mrf within the cal range is provided
                 if dayafter in available_cities.keys():
                     available_cities[dayafter].append(location)
-            if daybefore not in mtg_days[presenter1] and day2before not in mtg_days.keys() and \
+            if daybefore not in mtg_days[presenter1] and day2before not in mtg_days[presenter1] and \
                             dayafter >= date.today() + timedelta(days=31) and values['city'] != '':
                 # below if could be deleted if only mrf within the cal range is provided
                 if daybefore in available_cities.keys():

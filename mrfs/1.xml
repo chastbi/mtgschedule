@@ -7,7 +7,7 @@
     <my:ClientName my:ClientID="000000">ACME Co.</my:ClientName>
   </my:ClientInfoGroup>
   <my:MTGInfoGroup>
-    <my:MtgDate my:mtgDateDate="">2018-01-24</my:MtgDate>
+    <my:MtgDate my:mtgDateDate="">2018-01-22</my:MtgDate>
     <my:MtgStatus>Confirmed</my:MtgStatus>
   </my:MTGInfoGroup>
   <my:MtgType>OnSite</my:MtgType>

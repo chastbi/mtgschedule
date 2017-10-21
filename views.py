@@ -3,9 +3,8 @@ from flask import render_template, url_for, redirect, flash, request, session
 from mtgschedule.settings import NEW_MRF_URL, PRESENTERS
 from mtgschedule.forms import MeetingForm, AddPresenter
 from mtgschedule.models import Schedule, Presenter
-from mtgschedule.functions import get_presenters, get_schedule, get_month_events, presenters_available, cities_available,\
-    presenter_dictionary, status_count
-from mtgschedule.xml_functions import get_mrf_list, create_mrf_dict
+from mtgschedule.functions import get_presenters, get_month_events, presenter_dictionary, status_count
+from mtgschedule.xml_functions import create_mrf_dict
 from mtgschedule.cal_functions import get_weekcal, monthdates_cal, monthsday1_list
 from mtgschedule.pubcal_functions import available_presenters, cities_available
 from datetime import timedelta, datetime
@@ -126,23 +125,19 @@ def wklyschedule(date=None):
     nextwk = nextweek.date()
     lastweek = finddate - timedelta(days=7)
     lastwk = lastweek.date()
-
+    weeks = monthdates_cal(yr, m)
     monthlinks = monthsday1_list()
 
     '''
     calendar creation
     '''
-    weeks = monthdates_cal(yr, m)
-    presenters = get_presenters()
     weekcal = get_weekcal(yr, m, finddate)
 
     '''
     load meetings
     '''
-    schedule_dict = get_schedule(weekcal, "Cancelled") #sql
-    #mrfs = get_mrf_list() #xml
-    mrfs = create_mrf_dict()
-    return render_template("wklyschedule.html", weekcal=weekcal, presenters=PRESENTERS, events=schedule_dict,
+    mrfs = create_mrf_dict() #xml
+    return render_template("wklyschedule.html", weekcal=weekcal, presenters=PRESENTERS,
                            nextwk=nextwk, lastwk=lastwk, monthlinks=monthlinks, month_name=month_name, weeks=weeks,
                            lastdate=session['lastdate'], mrfs=mrfs)
 
