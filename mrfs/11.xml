@@ -4,10 +4,10 @@
     <my:PlanName>Plan Name</my:PlanName>
   </my:PlanInfoGrp>
   <my:ClientInfoGroup>
-    <my:ClientName my:ClientID="000000">ACME Co. 1</my:ClientName>
+  <my:ClientName my:ClientID="000000">ACME Co. 5</my:ClientName>
   </my:ClientInfoGroup>
   <my:MTGInfoGroup>
-    <my:MtgDate my:mtgDateDate="">2018-01-24</my:MtgDate>
+    <my:MtgDate my:mtgDateDate="">2018-01-30</my:MtgDate>
     <my:MtgStatus>Confirmed</my:MtgStatus>
   </my:MTGInfoGroup>
   <my:MtgType>OnSite</my:MtgType>
@@ -25,16 +25,14 @@
   </my:MTGRequestGroup>
   <my:OnsiteInfoGrp>
     <my:MtgAddress>Address</my:MtgAddress>
-    <my:City>Portland</my:City>
-    <my:State>OR</my:State>
+    <my:City>Dallas</my:City>
+    <my:State>TX</my:State>
     <my:Zip>Zip</my:Zip>
   </my:OnsiteInfoGrp>
   <my:MTGGroup>
-    <my:SchedulerStatus>Confirmed</my:SchedulerStatus>
-    <my:Presenter1 my:P1UserID="" my:P1CrewID="" my:P1Link="" my:P1Ext=""
-      my:P1Image="">Brad Chastain</my:Presenter1>
-    <my:Presenter2 my:P1UserID="" my:P1CrewID="" my:P1Link="" my:P1Ext=""
-                   my:P1Image="">Andrew Crouch</my:Presenter2>
-    <my:MtgLead my:MLLink="" my:MLExt="" my:MLUserID="" my:MLCrewID="">Andrew Crouch</my:MtgLead>
+    <my:SchedulerStatus>Ready to Confirm</my:SchedulerStatus>
+    <my:Presenter1 my:P1UserID="" my:P1CrewID="" my:P1Link="" my:P1Ext="" my:P1Image="">Andrew Crouch</my:Presenter1>
+    <my:Presenter2 my:P1UserID="" my:P1CrewID="" my:P1Link="" my:P1Ext="" my:P1Image="">Dennis Hale</my:Presenter2>
+    <my:MtgLead my:MLLink="" my:MLExt="" my:MLUserID="" my:MLCrewID="">Dennis Hale</my:MtgLead>
   </my:MTGGroup>
 </my:PEMeetingRequestForm>

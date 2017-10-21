@@ -47,6 +47,10 @@ def create_mrf_dict():
             mrf_dict[mrf]['presenter4'] = value['my:MTGGroup']['my:Presenter4']['#text']
         except:
             mrf_dict[mrf]['presenter4'] = None
+        try:
+            mrf_dict[mrf]['meetinglead'] = value['my:MTGGroup']['my:MtgLead']['#text']
+        except:
+            mrf_dict[mrf]['meetinglead'] = None
         mtgcount = 0
         for timegroup in value['my:MTGRequestGroup']['my:MTGTimesGroup']:
             mtgcount += 1

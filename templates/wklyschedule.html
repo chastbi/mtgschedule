@@ -23,6 +23,9 @@
             <span style="color:green">{{ mrfs[mrf]['city'] }}, {{ mrfs[mrf]['state'] }}</span><br/>
             {{ mrfs[mrf]['mtgtime1'] }} {{ mrfs[mrf]['mtgtopic1'] }}<br/>
             {{ mrfs[mrf]['mtgtime2'] }} {{ mrfs[mrf]['mtgtopic2'] }}<br/>
+            {% if mrfs[mrf]['meetinglead'] %}
+            <span style="color:grey">{{ mrfs[mrf]['meetinglead'] }} is ML</span><br/>
+            {% endif %}
             <span style="color:red">{{ mrfs[mrf]['status'] }}</span><br/>
             {% if eventtoday.update({'eventtoday' : True}) %}{% endif %}
             {% endif %}
