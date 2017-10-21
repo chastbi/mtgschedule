@@ -32,9 +32,21 @@ def create_mrf_dict():
                          'city':value['my:OnsiteInfoGrp']['my:City'],
                          'state':value['my:OnsiteInfoGrp']['my:State'],
                          'status':value['my:MTGGroup']['my:SchedulerStatus'],
-                         'presenter1':value['my:MTGGroup']['my:Presenter1']['#text'],
                          }
-
+        if value['my:MTGGroup']['my:Presenter1']['#text']:
+            mrf_dict[mrf]['presenter1'] = value['my:MTGGroup']['my:Presenter1']['#text']
+        try:
+            mrf_dict[mrf]['presenter2'] = value['my:MTGGroup']['my:Presenter2']['#text']
+        except:
+            mrf_dict[mrf]['presenter2'] = None
+        try:
+            mrf_dict[mrf]['presenter3'] = value['my:MTGGroup']['my:Presenter3']['#text']
+        except:
+            mrf_dict[mrf]['presenter3'] = None
+        try:
+            mrf_dict[mrf]['presenter4'] = value['my:MTGGroup']['my:Presenter4']['#text']
+        except:
+            mrf_dict[mrf]['presenter4'] = None
         mtgcount = 0
         for timegroup in value['my:MTGRequestGroup']['my:MTGTimesGroup']:
             mtgcount += 1

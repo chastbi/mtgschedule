@@ -16,14 +16,16 @@
       <td style="font-size:11px;">
       {% endif %}
         {% for mrf in mrfs %}
-          {% if mrfs[mrf]['date'] == weekcal[day]
-            and mrfs[mrf]['presenter1'] == presenter['name'] %}
+          {% if mrfs[mrf]['date'] == weekcal[day] %}
+            {% if mrfs[mrf]['presenter1'] == presenter['name'] or
+                mrfs[mrf]['presenter2'] == presenter['name'] %}
             <span style="color:blue">{{ mrfs[mrf]['clientname'] }}</span><br/>
             <span style="color:green">{{ mrfs[mrf]['city'] }}, {{ mrfs[mrf]['state'] }}</span><br/>
             {{ mrfs[mrf]['mtgtime1'] }} {{ mrfs[mrf]['mtgtopic1'] }}<br/>
             {{ mrfs[mrf]['mtgtime2'] }} {{ mrfs[mrf]['mtgtopic2'] }}<br/>
             <span style="color:red">{{ mrfs[mrf]['status'] }}</span><br/>
             {% if eventtoday.update({'eventtoday' : True}) %}{% endif %}
+            {% endif %}
           {% endif %}
         {% endfor %}
         {% if eventtoday['eventtoday'] == false %}
