@@ -62,7 +62,7 @@ def submitform():
         db.session.add(note)
         db.session.flush()
         db.session.commit()
-        flash('Calendar entry submitted.')
+        flash('Scheduler note submitted.')
         if session['lastdate']:
             return redirect(url_for('wklyschedule') + "/" + session['lastdate'])
         else:
@@ -210,7 +210,6 @@ def note_info():
     noteid = request.args.get('noteid')
     note = Notes.query.filter_by(id=noteid).first()
     note = note.notes_dict
-    print(note)
     return render_template('mtginfo.html', note=note)
 
 
@@ -221,7 +220,7 @@ def delete_note():
     db.session.delete(note)
     db.session.flush()
     db.session.commit()
-    flash("Meeting Deleted")
+    flash("Scheduler note deleted")
     if session['lastdate']:
         return redirect(url_for('wklyschedule') + "/" + session['lastdate'])
     else:
