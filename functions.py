@@ -1,33 +1,33 @@
 from mtgschedule.models import Notes
 from datetime import date, timedelta
 
+'''
 def get_presenters():
-    '''
     returns a dictionary of presenters from database
-    '''
     presenters = Presenter.query.order_by(Presenter.name).all()
     presenter_dict = [item.presenter_dict for item in presenters]
     return presenter_dict
+'''
 
 
 def get_schedule(weekcal):
     '''
-    returns a dictionary of one week's events within that occur within weekcal (used on weekly schedule)
+    returns a dictionary of one week's Notes within that occur within weekcal (used on weekly schedule)
     '''
-    events = Notes.query.filter(Notes.date.between(weekcal[0], weekcal[-1])).all()
-    notes_dict = [item.notes_dict for item in events]
+    notes = Notes.query.filter(Notes.date.between(weekcal[0], weekcal[-1])).all()
+    notes_dict = [item.notes_dict for item in notes]
     return notes_dict
 
 
-def get_month_events(monthcal, hidestatus=None, **kwargs):
+def get_month_notes(monthcal):
     '''
-    return events within a monthcal as a dictionary (used on pubcal.html)
+    return Notes within a monthcal as a dictionary (used on pubcal.html)
     '''
     firstday = monthcal[0][0]
     lastday = monthcal[-1][-1]
-    events = Notes.query.order_by(Notes.date.filter(Notes.date.between(firstday, lastday))).filter_by(**kwargs).all()
-    schedule_dict = [item.schedule_dict for item in events]
-    return schedule_dict
+    notes = Notes.query.filter(Notes.date.between(firstday, lastday)).all()
+    notes_dict = [item.notes_dict for item in notes]
+    return notes_dict
 
 
 def presenters_available(schedule_dict, monthdates):
@@ -35,8 +35,8 @@ def presenters_available(schedule_dict, monthdates):
     returns dictionary of monthdates and number of available presenters
     :return:
     '''
-    presenters = get_presenters()
-    presenterqty = len(presenters)
+    #presenters = get_presenters()
+    #presenterqty = len(presenters)
     # create a dictionary of presenters listing busy days (includes travel days)
     unavail = {}
     for presenter in presenters:

@@ -1,5 +1,6 @@
 from mtgschedule.settings import PRESENTERS
 from mtgschedule.xml_functions import create_mrf_dict
+from mtgschedule.functions import get_month_notes
 from datetime import timedelta, date
 
 
@@ -39,6 +40,7 @@ def available_presenters(cal):
 
     available_count = {}
     qty_presenters = len(PRESENTERS)
+
     mrflist = create_mrf_dict()
     mtg_days = presenter_mtg_days(mrflist)
     for mrf, values in mrflist.items():
@@ -52,6 +54,17 @@ def available_presenters(cal):
             if yesterday not in mtg_days[presenter]:
                 if values['presenter1'] == presenter or values['presenter2'] == presenter:
                     mtg_days[presenter].append(yesterday)
+
+    notes = get_month_notes(cal)
+    for note in notes:
+        today = note['date']
+        tomorrow = today + timedelta(days=1)
+        if today not in mtg_days[note['presenter']]:
+            mtg_days[note['presenter']].append(today)
+            print(note['presenter'], mtg_days[note['presenter']])
+        if tomorrow not in mtg_days[note['presenter']]:
+            mtg_days[note['presenter']].append(tomorrow)
+            print(note['presenter'], mtg_days[note['presenter']])
 
     for week in cal:
         for day in week:

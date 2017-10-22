@@ -3,7 +3,7 @@ from flask import render_template, url_for, redirect, flash, request, session
 from mtgschedule.settings import NEW_MRF_URL, MRFS_URL, PRESENTERS
 from mtgschedule.forms import MeetingForm, AddPresenter
 from mtgschedule.models import Notes
-from mtgschedule.functions import get_presenters, get_month_events, presenter_dictionary, status_count, get_schedule
+from mtgschedule.functions import presenter_dictionary, status_count, get_schedule
 from mtgschedule.xml_functions import create_mrf_dict
 from mtgschedule.cal_functions import get_weekcal, monthdates_cal, monthsday1_list
 from mtgschedule.pubcal_functions import available_presenters, cities_available
@@ -112,7 +112,6 @@ def wklyschedule(date=None):
     '''
     mrfs = create_mrf_dict() #xml
     notes = get_schedule(weekcal)
-    print(notes)
     return render_template("wklyschedule.html", weekcal=weekcal, presenters=PRESENTERS, notes=notes,
                            nextwk=nextwk, lastwk=lastwk, monthlinks=monthlinks, month_name=month_name, weeks=weeks,
                            lastdate=session['lastdate'], mrfs=mrfs, mrfs_url=MRFS_URL)
