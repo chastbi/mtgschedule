@@ -13,7 +13,7 @@
   <my:MtgType>OnSite</my:MtgType>
   <my:MTGRequestGroup>
     <my:MTGTimesGroup>
-      <my:Times my:AMPM="">11:00 AM</my:Times>
+      <my:Times my:AMPM="">10:00 AM</my:Times>
       <my:MtgTopic>Financial Freedom</my:MtgTopic>
       <my:Num my:numCount="1">1</my:Num>
     </my:MTGTimesGroup>
@@ -30,11 +30,11 @@
     <my:Zip>Zip</my:Zip>
   </my:OnsiteInfoGrp>
   <my:MTGGroup>
-    <my:SchedulerStatus>Ready to Confirm</my:SchedulerStatus>
+    <my:SchedulerStatus>Confirmed</my:SchedulerStatus>
     <my:Presenter1 my:P1UserID="" my:P1CrewID="" my:P1Link="" my:P1Ext=""
-      my:P1Image="">Michael Gozdowski</my:Presenter1>
+      my:P1Image="">Lourdes Nieves</my:Presenter1>
     <my:Presenter2 my:P1UserID="" my:P1CrewID="" my:P1Link="" my:P1Ext=""
-      my:P1Image=""/>
-    <my:MtgLead my:MLLink="" my:MLExt="" my:MLUserID="" my:MLCrewID=""/>
+                   my:P1Image=""/>
+    <my:MtgLead my:MLLink="" my:MLExt="" my:MLUserID="" my:MLCrewID="">Dennis Hale</my:MtgLead>
   </my:MTGGroup>
 </my:PEMeetingRequestForm>

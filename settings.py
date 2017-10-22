@@ -27,3 +27,5 @@ PRESENTERS=[{'name':'Brad Chastain', 'site':'AZ'},
 PRESENTERS_LIST  = [('Andrew Crouch', 'Andrew Crouch'), ('Brad Chastain', 'Brad Chastain'),
                     ('Dennis Hale', 'Dennis Hale'), ('Lourdes Nieves', 'Lourdes Nieves'),
                     ('Michael Gozdowski', 'Michael Gozdowski'), ('Steve Roberts', 'Steve Roberts')]
+
+RUSH_ADVANCE = 31
