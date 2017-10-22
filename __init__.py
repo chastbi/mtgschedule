@@ -9,7 +9,6 @@ db = SQLAlchemy(app)
 
 # Migrations
 migrate = Migrate(app, db)
-from mtgschedule.models import Presenter, Schedule
 
 from mtgschedule import views
 

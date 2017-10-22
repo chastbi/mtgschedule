@@ -2,8 +2,8 @@ from mtgschedule import app, db
 from flask import render_template, url_for, redirect, flash, request, session
 from mtgschedule.settings import NEW_MRF_URL, MRFS_URL, PRESENTERS
 from mtgschedule.forms import MeetingForm, AddPresenter
-from mtgschedule.models import Schedule, Presenter
-from mtgschedule.functions import get_presenters, get_month_events, presenter_dictionary, status_count
+from mtgschedule.models import Notes
+from mtgschedule.functions import get_presenters, get_month_events, presenter_dictionary, status_count, get_schedule
 from mtgschedule.xml_functions import create_mrf_dict
 from mtgschedule.cal_functions import get_weekcal, monthdates_cal, monthsday1_list
 from mtgschedule.pubcal_functions import available_presenters, cities_available
@@ -26,10 +26,10 @@ def submitform():
         submitdate = datetime.strptime(request.values['submitdate'], "%Y-%m-%d")
         submitdate = submitdate.date()
         if request.args.get('presenter'):
-            selectpresenter = Presenter.query.filter_by(name=request.values['presenter']).first()
-            form = MeetingForm(mtg_date=submitdate, presenter=selectpresenter)
+            selectpresenter = request.args.get('presenter')
+            form = MeetingForm(date=submitdate, presenter=selectpresenter)
         else:
-            form = MeetingForm(mtg_date=submitdate)
+            form = MeetingForm(date=submitdate)
         error = None
     else:
         form = MeetingForm()
@@ -37,24 +37,13 @@ def submitform():
 
     if form.validate_on_submit():
         '''
-        edits existing calendar events
+        edits existing schedule notes
         '''
-        if request.form.get('mtgid') != "None":
-            event = Schedule.query.filter_by(id=request.form.get('mtgid')).first()
-            if form.presenter.data:
-                event.presenter = form.presenter.data.id
-            else:
-                event.presenter = None
-            event.event = form.event.data
-            event.status = form.status.data
-            event.mtg_date = form.mtg_date.data
-            event.city = form.city.data
-            event.state = form.state.data
-            event.mtg_time = form.mtg_time1.data
-            event.mtg_time2 = form.mtg_time2.data
-            event.mtg_topic1 = form.mtg_topic1.data
-            event.mtg_topic2 = form.mtg_topic2.data
-            event.notes = form.notes.data
+        if request.form.get('noteid') != "None":
+            note = Notes.query.filter_by(id=request.form.get('noteid')).first()
+            note.presenter = form.presenter.data
+            note.date = form.date.data
+            note.notes = form.notes.data
             db.session.flush()
             db.session.commit()
 
@@ -63,26 +52,14 @@ def submitform():
             else:
                 return redirect(url_for('wklyschedule'))
         '''
-        creates new calendar events
+        creates new schedule notes
         '''
-        if form.presenter.data:
-            presenterid = form.presenter.data.id
-        else:
-            presenterid = None
-        event = Schedule(
-            presenterid,
-            form.event.data,
-            form.status.data,
-            form.mtg_date.data,
-            form.city.data,
-            form.state.data,
-            form.mtg_time1.data,
-            form.mtg_time2.data,
-            form.mtg_topic1.data,
-            form.mtg_topic2.data,
+        note = Notes(
+            form.presenter.data,
+            form.date.data,
             form.notes.data,
         )
-        db.session.add(event)
+        db.session.add(note)
         db.session.flush()
         db.session.commit()
         flash('Calendar entry submitted.')
@@ -94,15 +71,13 @@ def submitform():
     return render_template("submitform.html", form=form, error=error)
 
 
-@app.route('/editevent')
-def edit_event():
-    id = request.args.get('id')
-    event = Schedule.query.filter_by(id=id).first()
-    presentername = Presenter.query.filter_by(id=event.presenter).first()
+@app.route('/editnote')
+def editnote():
+    noteid = request.args.get('noteid')
+    note = Notes.query.filter_by(id=noteid).first()
+    #presenter = Notes.query.filter_by(id=note.presenter).first()
 
-    form = MeetingForm(event=event.event, mtg_date=event.mtg_date, status=event.status, presenter=presentername,
-                       city=event.city, state=event.state, mtg_time1=event.mtg_time1, mtg_time2=event.mtg_time2,
-                       mtg_topic1=event.mtg_topic1, mtg_topic2=event.mtg_topic2, notes=event.notes)
+    form = MeetingForm(date=note.date, presenter=note.presenter, notes=note.notes)
     error = None
     return render_template("submitform.html", form=form, error=error)
 
@@ -132,12 +107,13 @@ def wklyschedule(date=None):
     calendar creation
     '''
     weekcal = get_weekcal(yr, m, finddate)
-
     '''
     load meetings
     '''
     mrfs = create_mrf_dict() #xml
-    return render_template("wklyschedule.html", weekcal=weekcal, presenters=PRESENTERS,
+    notes = get_schedule(weekcal)
+    print(notes)
+    return render_template("wklyschedule.html", weekcal=weekcal, presenters=PRESENTERS, notes=notes,
                            nextwk=nextwk, lastwk=lastwk, monthlinks=monthlinks, month_name=month_name, weeks=weeks,
                            lastdate=session['lastdate'], mrfs=mrfs, mrfs_url=MRFS_URL)
 
@@ -230,19 +206,20 @@ def admin():
     return render_template("admin.html", presenters=presenters)
 
 
-@app.route('/mtginfo')
-def mtg_info():
-    presenters = presenter_dictionary(get_presenters())
-    mtg_id = request.args.get('mtgid')
-    mrf = Schedule.query.filter_by(id=mtg_id).first()
-    return render_template('mtginfo.html', mrf=mrf, presenter=presenters)
+@app.route('/noteinfo')
+def note_info():
+    noteid = request.args.get('noteid')
+    note = Notes.query.filter_by(id=noteid).first()
+    note = note.notes_dict
+    print(note)
+    return render_template('mtginfo.html', note=note)
 
 
-@app.route('/delevent')
-def delete_event():
-    mtgid = request.args.get('id')
-    mtg = Schedule.query.filter_by(id=mtgid).first()
-    db.session.delete(mtg)
+@app.route('/delnote')
+def delete_note():
+    noteid = request.args.get('noteid')
+    note = Notes.query.filter_by(id=noteid).first()
+    db.session.delete(note)
     db.session.flush()
     db.session.commit()
     flash("Meeting Deleted")

@@ -3,18 +3,14 @@
 {% block title %}Events List{% endblock %}
 
 {% block content %}
-<h3>Meeting Info.</h3>
-{{ mrf.event }}<br/>
-{{ mrf.mtg_date }}<br/>
-{{ mrf.status }}<br/>
-{{ presenter[mrf.presenter] }}<br/>
-{{ mrf.city }}, {{ mrf.state }}<br/>
-{{ mrf.mtg_time1 }} {{ mrf.mtg_topic1 }}<br/>
-{{ mrf.mtg_time2 }} {{ mrf.mtg_topic2 }}<br/>
-{{ mrf.notes }}<br/>
+<h4>Note:</h4>
+<br/>
+{{ note['date'] }}<br/>
+{{ note['presenter'] }}<br/>
+{{ note['notes'] }}<br/>
 <p><br/>
-<a href="{{ url_for('edit_event')}}?id={{ mrf.id }}">edit</a>
+<a href="{{ url_for('editnote')}}?noteid={{ note['id'] }}">edit</a>
   &nbsp;|&nbsp;
-<a href="{{ url_for('delete_event')}}?id={{ mrf.id }}">delete</a>
+<a href="{{ url_for('delete_note')}}?noteid={{ note['id'] }}">delete</a>
 </p>
 {% endblock %}

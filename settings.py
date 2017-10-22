@@ -4,7 +4,7 @@ SECRET_KEY = 'hard to guess key'
 DEBUG = True
 DB_USERNAME = 'root'
 DB_PASSWORD = 'root'
-BLOG_DATABASE_NAME = 'meetingsgroup'
+BLOG_DATABASE_NAME = 'notes'
 DB_HOST = 'localhost'
 DB_URI = "mysql+pymysql://%s:%s@%s/%s" % (DB_USERNAME, DB_PASSWORD, DB_HOST, BLOG_DATABASE_NAME)
 SQLALCHEMY_DATABASE_URI = DB_URI
@@ -23,3 +23,7 @@ PRESENTERS=[{'name':'Brad Chastain', 'site':'AZ'},
             {'name':'Andrew Crouch', 'site':'PA'},
             {'name':'Michael Gozdowski', 'site':'PA'},
             {'name':'Lourdes Nieves', 'site':'PA'}]
+
+PRESENTERS_LIST  = [('Andrew Crouch', 'Andrew Crouch'), ('Brad Chastain', 'Brad Chastain'),
+                    ('Dennis Hale', 'Dennis Hale'), ('Lourdes Nieves', 'Lourdes Nieves'),
+                    ('Michael Gozdowski', 'Michael Gozdowski'), ('Steve Roberts', 'Steve Roberts')]

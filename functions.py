@@ -1,4 +1,4 @@
-from mtgschedule.models import Presenter, Schedule
+from mtgschedule.models import Notes
 from datetime import date, timedelta
 
 def get_presenters():
@@ -10,13 +10,13 @@ def get_presenters():
     return presenter_dict
 
 
-def get_schedule(weekcal, hidestatus=None):
+def get_schedule(weekcal):
     '''
     returns a dictionary of one week's events within that occur within weekcal (used on weekly schedule)
     '''
-    events = Schedule.query.filter(Schedule.mtg_date.between(weekcal[0], weekcal[-1]), Schedule.status!=hidestatus).all()
-    schedule_dict = [item.schedule_dict for item in events]
-    return schedule_dict
+    events = Notes.query.filter(Notes.date.between(weekcal[0], weekcal[-1])).all()
+    notes_dict = [item.notes_dict for item in events]
+    return notes_dict
 
 
 def get_month_events(monthcal, hidestatus=None, **kwargs):
@@ -25,7 +25,7 @@ def get_month_events(monthcal, hidestatus=None, **kwargs):
     '''
     firstday = monthcal[0][0]
     lastday = monthcal[-1][-1]
-    events = Schedule.query.order_by(Schedule.mtg_date).filter(Schedule.mtg_date.between(firstday, lastday), Schedule.status!=hidestatus).filter_by(**kwargs).all()
+    events = Notes.query.order_by(Notes.date.filter(Notes.date.between(firstday, lastday))).filter_by(**kwargs).all()
     schedule_dict = [item.schedule_dict for item in events]
     return schedule_dict
 
