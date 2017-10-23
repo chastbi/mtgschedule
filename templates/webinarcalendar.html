@@ -37,10 +37,13 @@
     </td>
     {% for day in range(0,7) %}
       {% if day == 6 or day == 0 %}
-    <td style="background-color:rgba(240,220,180,0.5);">
+    <td style="background-color:rgba(240,220,180,0.5)">
       {% else %}
-    <td>
-    Webinars go here
+    <td style="font-size:10px">
+    <span style="color:blue">8:30AM - Acme Co.</span><br/>
+    <span style="color:navy">Create Your Plan</br>Steve Michael</span><br/>
+    <span style="color:blue">10:00AM - ABC Corp.</span><br/>
+    <span style="color:navy">Financial Freedom</br>Steve Michael</span><br/>
       {% endif %}
     </td>
     {% endfor %}

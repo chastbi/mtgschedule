@@ -15,12 +15,10 @@
       {{ form.hidden_tag() }}
 
       <input type="hidden" name="noteid" value="{{ request.args.get('noteid') }}">
-
-      {{ render_field(form.presenter, class="form-control") }}
-      {{ render_field(form.date, class="form-control") }}
-      {{ render_field(form.notes, class="form-control") }}
-
-    <button type="submit" class="btn btn-default">Submit</button>
+      <div style="col-xs-6">{{ render_field(form.presenter, class="form-control") }}</div>
+      <div style="col-xs-6">{{ render_field(form.date, class="form-control") }}</div>
+      <div style="col-xs-12">{{ render_field(form.notes, class="form-control") }}</div>
+      <button type="submit" class="btn btn-default">Submit</button>
 
     </form>
   </div>

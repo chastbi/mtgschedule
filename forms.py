@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, validators
+from wtforms import StringField, SelectField, PasswordField, validators
 from wtforms.fields.html5 import DateField
 from mtgschedule.settings import PRESENTERS_LIST
 
@@ -12,5 +12,6 @@ class MeetingForm(FlaskForm):
     notes = StringField('Notes')
 
 
-class AddPresenter(FlaskForm):
-    presenter_name = StringField('Name', [validators.length(2, 30), validators.DataRequired()])
+class LoginForm(FlaskForm):
+    username = StringField('Username')
+    password = PasswordField('Password')

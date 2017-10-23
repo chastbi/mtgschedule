@@ -27,10 +27,10 @@
               {% if mrfs[mrf]['presenter1'] == presenter['name'] or
                   mrfs[mrf]['presenter2'] == presenter['name'] %}
               <a href="file:///{{ mrfs_url }}/{{ mrf }}" >
-              <span style="color:blue">{{ mrfs[mrf]['clientname'] }}</span><br/>
+              <span style="color:navy; font-weight:bold">{{ mrfs[mrf]['clientname'] }}</span><br/>
               <span style="color:green">{{ mrfs[mrf]['city'] }}, {{ mrfs[mrf]['state'] }}</span><br/>
-              {{ mrfs[mrf]['mtgtime1'] }} {{ mrfs[mrf]['mtgtopic1'] }}<br/>
-              {{ mrfs[mrf]['mtgtime2'] }} {{ mrfs[mrf]['mtgtopic2'] }}<br/>
+              <span style="color:steelblue">{{ mrfs[mrf]['mtgtime1'] }} {{ mrfs[mrf]['mtgtopic1'] }}<br/>
+                {{ mrfs[mrf]['mtgtime2'] }} {{ mrfs[mrf]['mtgtopic2'] }}</span><br/>
               {% if mrfs[mrf]['meetinglead'] %}
               <span style="color:grey">{{ mrfs[mrf]['meetinglead'] }} is ML</span><br/>
               {% endif %}
@@ -44,7 +44,8 @@
           {% for note in notes %}
             {% if note['presenter'] == presenter.name and note['date'] == weekcal[day] %}
               <br/>
-            <a href="{{ url_for('note_info') }}?noteid={{ note['id'] }}">{{ note['notes'] }}</a>
+               <a href="{{ url_for('note_info') }}?noteid={{ note['id'] }}">
+                 <span style="color:purple">{{ note['notes'] }}</span></a>
             {% endif %}
           {% endfor %}
           {% if eventtoday['eventtoday'] == false %}
@@ -79,6 +80,13 @@
 <a href="{{ url_for('wklyschedule') }}/{{ lastwk }}">Last Week</a>
 &nbsp;&nbsp;
 <a href="{{ url_for('wklyschedule') }}/{{ nextwk }}">Next Week</a>
+  <span style="float:right">
+    <a href="">All</a>
+    &nbsp;|&nbsp;
+    <a href="">AZ</a>
+    &nbsp;|&nbsp;
+    <a href="">PA</a>
+  </span>
 </p>
 
 <table class="table table-bordered">
@@ -95,11 +103,5 @@
   {{ presenter_rows('PA') }}
   {{ presenter_rows('AZ') }}
 </table>
-
-<!--
-<p>
-  <a href="{{ url_for('add_presenter') }}">Add Presenter</a>
-</p>
--->
 
 {% endblock%}

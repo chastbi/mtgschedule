@@ -3,6 +3,8 @@
 {% block title %}Public Calendar{% endblock %}
 
 {% block content %}
+<div class="col-md-offset-1 col-md-10">
+
   <h3>{{ month_name[monthdates[3][3].month] }} {{ monthdates[3][3].year }} | Meeting Availability</h3>
   |&nbsp;
   {% for month in monthlinks %}
@@ -17,7 +19,7 @@
     <td>Friday</td>
   </tr>
     {% for week in monthdates %}
-    <tr style="font-size:11px; background-color:rgba(240,220,180,0.5)">
+    <tr style="font-size:11px; background-color:rgba(240,220,180,0.5); height:70px">
       {% for day in week %}
       {% if day.weekday() != 5 and day.weekday() != 6 %}
         <td>
@@ -41,5 +43,5 @@
     </tr>
     {% endfor %}
   </table>
-
+</div>
 {% endblock %}

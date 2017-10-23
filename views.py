@@ -1,7 +1,7 @@
 from mtgschedule import app, db
 from flask import render_template, url_for, redirect, flash, request, session
 from mtgschedule.settings import NEW_MRF_URL, MRFS_URL, PRESENTERS
-from mtgschedule.forms import MeetingForm, AddPresenter
+from mtgschedule.forms import MeetingForm, LoginForm
 from mtgschedule.models import Notes
 from mtgschedule.functions import presenter_dictionary, status_count, get_schedule
 from mtgschedule.xml_functions import create_mrf_dict
@@ -139,12 +139,11 @@ def webinarschedule(date=None):
 
     weeks = monthdates_cal(yr, m)
     monthlinks = monthsday1_list()
-    presenters = get_presenters()
     weekcal = get_weekcal(yr, m, finddate)
 
     roomlist = ["PA Main", "PA #2", "AZ Main", "AZ #2"]
 
-    return render_template("webinarcalendar.html", weekcal=weekcal, presenters=presenters, roomlist=roomlist,
+    return render_template("webinarcalendar.html", weekcal=weekcal, roomlist=roomlist,
                            nextwk=nextwk, lastwk=lastwk, nextmonth=nextmonth, lastmonth=lastmonth,
                            monthlinks = monthlinks, month_name=month_name, weeks=weeks, lastdate=session['lastdate'])
 
@@ -199,10 +198,12 @@ def eventslist(date=None):
                            statuscount=statuscount)
 
 
-@app.route('/admin')
-def admin():
-    presenters = get_presenters()
-    return render_template("admin.html", presenters=presenters)
+@app.route('/login', methods=["GET", "POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit:
+        redirect(url_for('wklyschedule'))
+    return render_template("login.html", form=form)
 
 
 @app.route('/noteinfo')
@@ -225,20 +226,3 @@ def delete_note():
         return redirect(url_for('wklyschedule') + "/" + session['lastdate'])
     else:
         return redirect(url_for('wklyschedule'))
-
-
-@app.route('/addpresenter', methods=['GET', 'POST'])
-def add_presenter():
-    form = AddPresenter()
-    error = None
-
-    if form.validate_on_submit():
-        presenter = Presenter(form.presenter_name.data)
-
-        db.session.add(presenter)
-        db.session.flush()
-        db.session.commit()
-        flash('Presenter added.')
-        return redirect(url_for('wklyschedule'))
-
-    return render_template("addpresenterform.html", form=form, error=error)

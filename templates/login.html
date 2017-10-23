@@ -3,21 +3,20 @@
 {% block title %}Administration{% endblock %}
 
 {% block content %}
-  <h3>Add/Remove Presenters</h3>
-<p>
-  <h5>Active Presenters</h5>
-  {% for presenter in presenters %}
-  {% if presenter['active'] == True %}
-    {{ presenter['name'] }}<br/>
-  {% endif %}
-  {% endfor %}
-</p>
-<p>
-  <h5>Inactive Presenters</h5>
-  {% for presenter in presenters %}
-  {% if presenter['active'] == False %}
-    {{ presenter['name'] }}<br/>
-  {% endif %}
-  {% endfor %}
-</p>
+<div class="row">
+  <div class="col-md-offset-4 col-md-3">
+    <h3>Login:</h3>
+    {% from "_formhelpers.html" import render_field %}
+    <form method="POST" action="{{ url_for('login') }}" role="form">
+      {{ form.hidden_tag() }}
+
+      {{ render_field(form.username, class="form-control") }}
+      {{ render_field(form.password, class="form-control") }}
+
+      <button type="submit" class="btn btn-default">Submit</button>
+
+
+    </form>
+  </div>
+</div>
 {% endblock %}
