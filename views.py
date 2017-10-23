@@ -208,6 +208,12 @@ def login():
     return render_template("login.html", form=form, error=error)
 
 
+@app.route('/logout', methods=["GET", "POST"])
+def logout():
+    session.pop('username')
+    return redirect(url_for('index'))
+
+
 @app.route('/noteinfo')
 def note_info():
     noteid = request.args.get('noteid')

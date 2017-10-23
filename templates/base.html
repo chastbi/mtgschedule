@@ -8,20 +8,13 @@
 </head>
 <body style="background-color:#f2f2f2">
 
-<div class="navbar navbar-inverse" role="navigation"
-     style="background-color:rgb(150,21,29)">
+<div class="navbar navbar-inverse"role="navigation"
+     style="background-color:rgb(150,21,29);">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle"
-              data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
       <a class="navbar-brand" href="/">PE Meetings</a>
     </div>
-    <div class="navbar-collapse collapse">
+    <div class="navbar-collapse">
       <ul class="nav navbar-nav">
         <li><a href="{{ url_for('pubcal') }}">Availability Calendar</a></li>
         {% if session['username'] == 'scheduler' or session['username'] == 'presenter' %}
@@ -29,8 +22,17 @@
         <li><a href="{{ url_for('webinarschedule') }}">Webinar Schedule</a></li>
         {% endif %}
       </ul>
-      <span style="float:right; color:grey;"><a href="{{ url_for('login') }}">Login</a></span>
+
+      <ul class="nav navbar-nav" style="float:right">
+        {% if session['username'] %}
+          <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        {% else %}
+          <li><a href="{{ url_for('login') }}">Login</a></li>
+        {% endif%}
+
+      </ul>
     </div>
+
 
   </div>
 </div>
