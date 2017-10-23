@@ -18,9 +18,11 @@
         {% else %}
         <td style="font-size:11px;">
         {% endif %}
+        {% if session['username'] == 'scheduler' %}
         <span style="float:right">
               <a href="{{ url_for('submitform') }}?submitdate={{ weekcal[day] }}&presenter={{ presenter.name }}">+</a>
               </span>
+        {% endif %}
         <!-- ADD MRFS -->
           {% for mrf in mrfs %}
             {% if mrfs[mrf]['date'] == weekcal[day] %}
@@ -44,8 +46,12 @@
           {% for note in notes %}
             {% if note['presenter'] == presenter.name and note['date'] == weekcal[day] %}
               <br/>
-               <a href="{{ url_for('note_info') }}?noteid={{ note['id'] }}">
-                 <span style="color:purple">{{ note['notes'] }}</span></a>
+                {% if session['username'] == 'scheduler' %}
+                  <a href="{{ url_for('note_info') }}?noteid={{ note['id'] }}">
+                  <span style="color:purple">{{ note['notes'] }}</span></a>
+                {% else %}
+                  {{ note['notes'] }}
+                {% endif %}
             {% endif %}
           {% endfor %}
           {% if eventtoday['eventtoday'] == false %}

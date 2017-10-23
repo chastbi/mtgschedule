@@ -122,29 +122,30 @@ def cities_available(schedule_dict, monthdates):
                 avail_cities[daybefore].append(location)
     return avail_cities
 
-
+'''
 def get_presenter_name(id, presenters):
     presentername = {}
-    '''
-    returns a presenter name from presenter dictionary using the id
-    '''
+    
+    #returns a presenter name from presenter dictionary using the id
+    
     for presenter in presenters:
         if presenter['id'] == id:
             presentername = presenter['name']
     return presentername
-
-
+'''
+'''
 def presenter_dictionary(presenters):
     dict = {}
     for presenter in presenters:
         dict[presenter['id']] = presenter['name']
     return dict
+'''
 
-
+'''
 def status_count(schedule_dict):
-    '''
-    create and return a dictionary of items with qty of each item
-    '''
+    
+    #create and return a dictionary of items with qty of each item
+    
     statuscount = {}
     for event in schedule_dict:
         statuscount[event['status']] = 0
@@ -152,3 +153,4 @@ def status_count(schedule_dict):
         statuscount[event['status']] += 1
 
     return statuscount
+'''

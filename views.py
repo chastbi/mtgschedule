@@ -1,9 +1,10 @@
 from mtgschedule import app, db
 from flask import render_template, url_for, redirect, flash, request, session
-from mtgschedule.settings import NEW_MRF_URL, MRFS_URL, PRESENTERS
+from mtgschedule.settings import NEW_MRF_URL, MRFS_URL, PRESENTERS, SCHEDULER_LOGIN, PRESENTER_LOGIN
+from mtgschedule.decorators import login_required
 from mtgschedule.forms import MeetingForm, LoginForm
 from mtgschedule.models import Notes
-from mtgschedule.functions import presenter_dictionary, status_count, get_schedule
+from mtgschedule.functions import get_schedule # presenter_dictionary, status_count,
 from mtgschedule.xml_functions import create_mrf_dict
 from mtgschedule.cal_functions import get_weekcal, monthdates_cal, monthsday1_list
 from mtgschedule.pubcal_functions import available_presenters, cities_available
@@ -71,19 +72,9 @@ def submitform():
     return render_template("submitform.html", form=form, error=error)
 
 
-@app.route('/editnote')
-def editnote():
-    noteid = request.args.get('noteid')
-    note = Notes.query.filter_by(id=noteid).first()
-    #presenter = Notes.query.filter_by(id=note.presenter).first()
-
-    form = MeetingForm(date=note.date, presenter=note.presenter, notes=note.notes)
-    error = None
-    return render_template("submitform.html", form=form, error=error)
-
-
 @app.route('/wklyschedule')
 @app.route('/wklyschedule/<date>')
+@login_required
 def wklyschedule(date=None):
     '''
     navigation
@@ -119,6 +110,7 @@ def wklyschedule(date=None):
 
 @app.route('/webinarschedule')
 @app.route('/webinarschedule/<date>')
+@login_required
 def webinarschedule(date=None):
     session['lastdate'] = None
     if date:
@@ -167,7 +159,7 @@ def pubcal(date=None):
     return render_template("pubcal.html", monthdates=monthdates, availability=availability, cities=cities,
                            month_name=month_name, monthlinks=monthlinks, mrf_url=NEW_MRF_URL)
 
-
+'''
 @app.route('/eventslist')
 @app.route('/eventslist/<date>')
 def eventslist(date=None):
@@ -196,14 +188,24 @@ def eventslist(date=None):
     return render_template("eventslist.html", monthdates=monthdates, nextmonth=nextmonth, monthlinks=monthlinks,
                            month_name=month_name, lastmonth=lastmonth, schedule_dict=schedule_dict, presenters=presenters,
                            statuscount=statuscount)
+'''
 
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
     form = LoginForm()
-    if form.validate_on_submit:
-        redirect(url_for('wklyschedule'))
-    return render_template("login.html", form=form)
+    error = None
+
+    if form.validate_on_submit():
+        if form.username.data == SCHEDULER_LOGIN['username'] and form.password.data == SCHEDULER_LOGIN['password']:
+            session['username'] = form.username.data
+            return redirect(url_for('wklyschedule'))
+        elif form.username.data == PRESENTER_LOGIN['username'] and form.password.data == PRESENTER_LOGIN['password']:
+            session['username'] = form.username.data
+            return redirect(url_for('wklyschedule'))
+        else:
+            error = "Incorrect username and password."
+    return render_template("login.html", form=form, error=error)
 
 
 @app.route('/noteinfo')
@@ -212,6 +214,16 @@ def note_info():
     note = Notes.query.filter_by(id=noteid).first()
     note = note.notes_dict
     return render_template('mtginfo.html', note=note)
+
+
+@app.route('/editnote')
+def editnote():
+    noteid = request.args.get('noteid')
+    note = Notes.query.filter_by(id=noteid).first()
+
+    form = MeetingForm(date=note.date, presenter=note.presenter, notes=note.notes)
+    error = None
+    return render_template("submitform.html", form=form, error=error)
 
 
 @app.route('/delnote')

@@ -23,12 +23,15 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li><a href="{{ url_for('pubcal') }}">Public Calendar</a></li>
+        <li><a href="{{ url_for('pubcal') }}">Availability Calendar</a></li>
+        {% if session['username'] == 'scheduler' or session['username'] == 'presenter' %}
         <li><a href="{{ url_for('wklyschedule') }}">Onsite Schedule</a></li>
         <li><a href="{{ url_for('webinarschedule') }}">Webinar Schedule</a></li>
-        <li><a href="{{ url_for('login') }}">Login</a></li>
+        {% endif %}
       </ul>
+      <span style="float:right; color:grey;"><a href="{{ url_for('login') }}">Login</a></span>
     </div>
+
   </div>
 </div>
 
