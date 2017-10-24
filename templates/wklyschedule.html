@@ -25,7 +25,7 @@
         {% endif %}
         <!-- ADD MRFS -->
           {% for mrf in mrfs %}
-            {% if mrfs[mrf]['date'] == weekcal[day] %}
+            {% if mrfs[mrf]['date'] == weekcal[day] and mrfs[mrf]['status'] != 'Cancelled' %}
               {% if mrfs[mrf]['presenter1'] == presenter['name'] or
                   mrfs[mrf]['presenter2'] == presenter['name'] %}
               <a href="file:///{{ mrfs_url }}/{{ mrf }}" >
@@ -109,7 +109,28 @@
     <td>Saturday,  {{ weekcal[6].month }}/{{ weekcal[6].day }}</td>
   </tr>
   {{ presenter_rows('PA') }}
+  <tr style="font-weight: bold; background-color:LightSteelBlue">
+    <td>{{ weekcal[3].year }}</td>
+    <td>Sunday, {{ weekcal[0].month }}/{{ weekcal[0].day }}</td>
+    <td>Monday,  {{ weekcal[1].month }}/{{ weekcal[1].day }}</td>
+    <td>Tuesday,  {{ weekcal[2].month }}/{{ weekcal[2].day }}</td>
+    <td>Wednesday,  {{ weekcal[3].month }}/{{ weekcal[3].day }}</td>
+    <td>Thursday,  {{ weekcal[4].month }}/{{ weekcal[4].day }}</td>
+    <td>Friday,  {{ weekcal[5].month }}/{{ weekcal[5].day }}</td>
+    <td>Saturday,  {{ weekcal[6].month }}/{{ weekcal[6].day }}</td>
+  </tr>
   {{ presenter_rows('AZ') }}
+  <tr style="font-weight: bold; background-color:LightSteelBlue">
+    <td>{{ weekcal[3].year }}</td>
+    <td>Sunday, {{ weekcal[0].month }}/{{ weekcal[0].day }}</td>
+    <td>Monday,  {{ weekcal[1].month }}/{{ weekcal[1].day }}</td>
+    <td>Tuesday,  {{ weekcal[2].month }}/{{ weekcal[2].day }}</td>
+    <td>Wednesday,  {{ weekcal[3].month }}/{{ weekcal[3].day }}</td>
+    <td>Thursday,  {{ weekcal[4].month }}/{{ weekcal[4].day }}</td>
+    <td>Friday,  {{ weekcal[5].month }}/{{ weekcal[5].day }}</td>
+    <td>Saturday,  {{ weekcal[6].month }}/{{ weekcal[6].day }}</td>
+  </tr>
+
 </table>
 
 {% endblock%}

@@ -35,8 +35,6 @@ def presenters_available(schedule_dict, monthdates):
     returns dictionary of monthdates and number of available presenters
     :return:
     '''
-    #presenters = get_presenters()
-    #presenterqty = len(presenters)
     # create a dictionary of presenters listing busy days (includes travel days)
     unavail = {}
     for presenter in presenters:

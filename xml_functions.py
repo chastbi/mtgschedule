@@ -25,7 +25,6 @@ def create_mrf_dict():
     xmllist = get_mrf_list()
     mrf_dict = {}
     for mrf, value in xmllist.items():
-
         mrf_dict[mrf] = {'clientname':value['my:ClientInfoGroup']['my:ClientName']['#text'],
                          'date':datetime.date(datetime.strptime(value['my:MTGInfoGroup']['my:MtgDate']['#text'],
                                                                 '%Y-%m-%d')),

@@ -34,7 +34,7 @@
     <my:Presenter1 my:P1UserID="" my:P1CrewID="" my:P1Link="" my:P1Ext=""
       my:P1Image="">Dennis Hale</my:Presenter1>
     <my:Presenter2 my:P1UserID="" my:P1CrewID="" my:P1Link="" my:P1Ext=""
-                   my:P1Image="">Andrew Crouch</my:Presenter2>
-    <my:MtgLead my:MLLink="" my:MLExt="" my:MLUserID="" my:MLCrewID="">Andrew Crouch</my:MtgLead>
+                   my:P1Image="">Michael Gozdowski</my:Presenter2>
+    <my:MtgLead my:MLLink="" my:MLExt="" my:MLUserID="" my:MLCrewID="">Dennis Hale</my:MtgLead>
   </my:MTGGroup>
 </my:PEMeetingRequestForm>

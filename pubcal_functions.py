@@ -16,22 +16,23 @@ def presenter_mtg_days(mrflist):
         mtg_days[presenter['name']] = []
 
     for mrf, values in mrflist.items():
-        try:
-            mtg_days[values['presenter1']].append(values['date'])
-        except:
-            pass
-        try:
-            mtg_days[values['presenter2']].append(values['date'])
-        except:
-            pass
-        try:
-            mtg_days[values['presenter3']].append(values['date'])
-        except:
-            pass
-        try:
-            mtg_days[values['presenter4']].append(values['date'])
-        except:
-            pass
+        if values['status'] != 'Cancelled':
+            try:
+                mtg_days[values['presenter1']].append(values['date'])
+            except:
+                pass
+            try:
+                mtg_days[values['presenter2']].append(values['date'])
+            except:
+                pass
+            try:
+                mtg_days[values['presenter3']].append(values['date'])
+            except:
+                pass
+            try:
+                mtg_days[values['presenter4']].append(values['date'])
+            except:
+                pass
     return mtg_days
 
 
@@ -59,16 +60,17 @@ def available_presenters(cal):
     mrflist = create_mrf_dict()
     mtg_days = presenter_mtg_days(mrflist)
     for mrf, values in mrflist.items():
-        today = values['date']
-        tomorrow = today + timedelta(days=1)
-        yesterday = today - timedelta(days=1)
-        for presenter, dates in mtg_days.items():
-            if tomorrow not in mtg_days[presenter]:
-                if values['presenter1'] == presenter or values['presenter2'] == presenter:
-                    mtg_days[presenter].append(tomorrow)
-            if yesterday not in mtg_days[presenter]:
-                if values['presenter1'] == presenter or values['presenter2'] == presenter:
-                    mtg_days[presenter].append(yesterday)
+        if values['status'] != 'Cancelled':
+            today = values['date']
+            tomorrow = today + timedelta(days=1)
+            yesterday = today - timedelta(days=1)
+            for presenter, dates in mtg_days.items():
+                if tomorrow not in mtg_days[presenter]:
+                    if values['presenter1'] == presenter or values['presenter2'] == presenter:
+                        mtg_days[presenter].append(tomorrow)
+                if yesterday not in mtg_days[presenter]:
+                    if values['presenter1'] == presenter or values['presenter2'] == presenter:
+                        mtg_days[presenter].append(yesterday)
 
     notes = get_month_notes(cal)
     for note in notes:
@@ -106,36 +108,37 @@ def cities_available(cal):
             available_cities[day] = []
 
     for mrf, values in mrflist.items():
-        presenters = []
-        if values['presenter1']:
-            presenters.append(values['presenter1'])
-        if values['presenter2']:
-            presenters.append(values['presenter2'])
-        if values['presenter3']:
-            presenters.append(values['presenter3'])
-        if values['presenter4']:
-            presenters.append(values['presenter4'])
-        city = values['city']
-        state = values['state']
-        location = city + ", " + state
-        day = values['date']
-        dayafter = day + timedelta(days=1)
-        day2after = day + timedelta(days=2)
-        daybefore = day - timedelta(days=1)
-        day2before = day - timedelta(days=2)
+        if values['status'] != 'Cancelled':
+            presenters = []
+            if values['presenter1']:
+                presenters.append(values['presenter1'])
+            if values['presenter2']:
+                presenters.append(values['presenter2'])
+            if values['presenter3']:
+                presenters.append(values['presenter3'])
+            if values['presenter4']:
+                presenters.append(values['presenter4'])
+            city = values['city']
+            state = values['state']
+            location = city + ", " + state
+            day = values['date']
+            dayafter = day + timedelta(days=1)
+            day2after = day + timedelta(days=2)
+            daybefore = day - timedelta(days=1)
+            day2before = day - timedelta(days=2)
 
-        note_days = notes_days(cal)
+            note_days = notes_days(cal)
 
-        for presenter in presenters:
-            if dayafter not in mtg_days[presenter] and day2after not in mtg_days[presenter] and values['city'] != ''\
-                    and dayafter not in note_days[presenter] and day >= date.today() + timedelta(days=RUSH_ADVANCE):
-                # below if could be deleted if only mrf within the cal range is provided
-                if dayafter in available_cities.keys() and location not in available_cities[dayafter]:
-                    available_cities[dayafter].append(location)
-            if daybefore not in mtg_days[presenter] and day2before not in mtg_days[presenter] and values['city'] != ''\
-                    and daybefore not in note_days[presenter] and day >= date.today() + timedelta(days=RUSH_ADVANCE):
-                # below if could be deleted if only mrf within the cal range is provided
-                if daybefore in available_cities.keys() and location not in available_cities[daybefore]:
-                    available_cities[daybefore].append(location)
+            for presenter in presenters:
+                if dayafter not in mtg_days[presenter] and day2after not in mtg_days[presenter] and values['city'] != ''\
+                        and dayafter not in note_days[presenter] and day >= date.today() + timedelta(days=RUSH_ADVANCE):
+                    # below if could be deleted if only mrf within the cal range is provided
+                    if dayafter in available_cities.keys() and location not in available_cities[dayafter]:
+                        available_cities[dayafter].append(location)
+                if daybefore not in mtg_days[presenter] and day2before not in mtg_days[presenter] and values['city'] != ''\
+                        and daybefore not in note_days[presenter] and day >= date.today() + timedelta(days=RUSH_ADVANCE):
+                    # below if could be deleted if only mrf within the cal range is provided
+                    if daybefore in available_cities.keys() and location not in available_cities[daybefore]:
+                        available_cities[daybefore].append(location)
 
     return available_cities
