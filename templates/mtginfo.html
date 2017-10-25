@@ -4,9 +4,9 @@
 
 {% block content %}
 <h4>Note:</h4>
-<br/>
-{{ note['date'] }}<br/>
 {{ note['presenter'] }}<br/>
+{{ note['date'] }}<br/><br/>
+
 {{ note['notes'] }}<br/>
 <p><br/>
 <a href="{{ url_for('editnote')}}?noteid={{ note['id'] }}">edit</a>
