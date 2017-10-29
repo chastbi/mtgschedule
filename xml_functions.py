@@ -30,6 +30,7 @@ def create_mrf_dict():
                                                                 '%Y-%m-%d')),
                          'city':value['my:OnsiteInfoGrp']['my:City'],
                          'state':value['my:OnsiteInfoGrp']['my:State'],
+                         'type':value['my:MtgType'],
                          'status':value['my:MTGGroup']['my:SchedulerStatus'],
                          }
         if value['my:MTGGroup']['my:Presenter1']['#text']:

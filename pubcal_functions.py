@@ -16,7 +16,7 @@ def presenter_mtg_days(mrflist):
         mtg_days[presenter['name']] = []
 
     for mrf, values in mrflist.items():
-        if values['status'] != 'Cancelled':
+        if values['status'] != 'Cancelled' and values['type'] != 'Webinar':
             try:
                 mtg_days[values['presenter1']].append(values['date'])
             except:

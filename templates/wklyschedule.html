@@ -25,7 +25,9 @@
         {% endif %}
         <!-- ADD MRFS -->
           {% for mrf in mrfs %}
-            {% if mrfs[mrf]['date'] == weekcal[day] and mrfs[mrf]['status'] != 'Cancelled' %}
+            {% if mrfs[mrf]['date'] == weekcal[day]
+            and mrfs[mrf]['status'] != 'Cancelled'
+            and mrfs[mrf]['type'] != 'Webinar' %}
               {% if mrfs[mrf]['presenter1'] == presenter['name'] or
                   mrfs[mrf]['presenter2'] == presenter['name'] %}
               <a href="file:///{{ mrfs_url }}/{{ mrf }}" >
