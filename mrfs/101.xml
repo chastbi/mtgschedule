@@ -10,7 +10,7 @@
     <my:MtgDate my:mtgDateDate="">2018-01-22</my:MtgDate>
     <my:MtgStatus>Confirmed</my:MtgStatus>
   </my:MTGInfoGroup>
-  <my:MtgType>Webinar</my:MtgType>
+  <my:MtgType>OnSite</my:MtgType>
   <my:MTGRequestGroup>
     <my:MTGTimesGroup>
       <my:Times my:AMPM="">11:00 AM</my:Times>

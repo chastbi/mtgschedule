@@ -30,7 +30,7 @@
           {% if availability[day] <= 0 and not cities[day] %}
           No Availability
           {% else %}
-          Anywhere: {{ availability[day] }}<br/>
+          Anywhere: <strong>{{ availability[day] }}</strong><br/>
           {% if cities[day] %}
             {% for city in cities[day] %}
               {{ city }}<br/>

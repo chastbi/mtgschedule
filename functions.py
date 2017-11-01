@@ -1,14 +1,6 @@
 from mtgschedule.models import Notes
 from datetime import date, timedelta
 
-'''
-def get_presenters():
-    returns a dictionary of presenters from database
-    presenters = Presenter.query.order_by(Presenter.name).all()
-    presenter_dict = [item.presenter_dict for item in presenters]
-    return presenter_dict
-'''
-
 
 def get_schedule(weekcal):
     '''
@@ -119,36 +111,3 @@ def cities_available(schedule_dict, monthdates):
                             dayafter >= date.today() + timedelta(days=31) and event['city'] != '':
                 avail_cities[daybefore].append(location)
     return avail_cities
-
-'''
-def get_presenter_name(id, presenters):
-    presentername = {}
-    
-    #returns a presenter name from presenter dictionary using the id
-    
-    for presenter in presenters:
-        if presenter['id'] == id:
-            presentername = presenter['name']
-    return presentername
-'''
-'''
-def presenter_dictionary(presenters):
-    dict = {}
-    for presenter in presenters:
-        dict[presenter['id']] = presenter['name']
-    return dict
-'''
-
-'''
-def status_count(schedule_dict):
-    
-    #create and return a dictionary of items with qty of each item
-    
-    statuscount = {}
-    for event in schedule_dict:
-        statuscount[event['status']] = 0
-    for event in schedule_dict:
-        statuscount[event['status']] += 1
-
-    return statuscount
-'''
