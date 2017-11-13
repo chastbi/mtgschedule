@@ -7,7 +7,7 @@
   <my:ClientName my:ClientID="000000">ACME Co. 101</my:ClientName>
   </my:ClientInfoGroup>
   <my:MTGInfoGroup>
-    <my:MtgDate my:mtgDateDate="">2018-01-22</my:MtgDate>
+    <my:MtgDate my:mtgDateDate="">2018-01-29</my:MtgDate>
     <my:MtgStatus>Confirmed</my:MtgStatus>
   </my:MTGInfoGroup>
   <my:MtgType>OnSite</my:MtgType>
@@ -30,7 +30,7 @@
     <my:Zip>Zip</my:Zip>
   </my:OnsiteInfoGrp>
   <my:MTGGroup>
-    <my:SchedulerStatus>Date Requested</my:SchedulerStatus>
+    <my:SchedulerStatus>Date Reserved</my:SchedulerStatus>
     <my:Presenter1 my:P1UserID="" my:P1CrewID="" my:P1Link="" my:P1Ext="" my:P1Image="">Andrew Crouch</my:Presenter1>
     <my:Presenter2 my:P1UserID="" my:P1CrewID="" my:P1Link="" my:P1Ext="" my:P1Image=""/>
     <my:MtgLead my:MLLink="" my:MLExt="" my:MLUserID="" my:MLCrewID="">Dennis Hale</my:MtgLead>

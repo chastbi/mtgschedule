@@ -4,7 +4,7 @@ from mtgschedule.settings import NEW_MRF_URL, MRFS_URL, PRESENTERS, SCHEDULER_LO
 from mtgschedule.decorators import login_required
 from mtgschedule.forms import MeetingForm, LoginForm
 from mtgschedule.models import Notes
-from mtgschedule.functions import get_schedule # presenter_dictionary, status_count,
+from mtgschedule.sql_functions import get_schedule # presenter_dictionary, status_count,
 from mtgschedule.xml_functions import create_mrf_dict
 from mtgschedule.cal_functions import get_weekcal, monthdates_cal, monthsday1_list
 from mtgschedule.pubcal_functions import available_presenters, cities_available

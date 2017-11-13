@@ -1,6 +1,6 @@
-from mtgschedule.settings import PRESENTERS, RUSH_ADVANCE
+from mtgschedule.settings import PRESENTERS, RUSH_TIMEFRIME
 from mtgschedule.xml_functions import create_mrf_dict
-from mtgschedule.functions import get_month_notes
+from mtgschedule.sql_functions import get_month_notes
 from datetime import timedelta, date
 
 
@@ -83,7 +83,7 @@ def available_presenters(cal):
 
     for week in cal:
         for day in week:
-            if day < date.today() + timedelta(days=RUSH_ADVANCE):
+            if day < date.today() + timedelta(days=RUSH_TIMEFRIME):
                 available_count[day] = 0
             else:
                 available_count[day] = qty_presenters
@@ -131,12 +131,12 @@ def cities_available(cal):
 
             for presenter in presenters:
                 if dayafter not in mtg_days[presenter] and day2after not in mtg_days[presenter] and values['city'] != ''\
-                        and dayafter not in note_days[presenter] and day >= date.today() + timedelta(days=RUSH_ADVANCE):
+                        and dayafter not in note_days[presenter] and day >= date.today() + timedelta(days=RUSH_TIMEFRIME):
                     # below if could be deleted if only mrf within the cal range is provided
                     if dayafter in available_cities.keys() and location not in available_cities[dayafter]:
                         available_cities[dayafter].append(location)
                 if daybefore not in mtg_days[presenter] and day2before not in mtg_days[presenter] and values['city'] != ''\
-                        and daybefore not in note_days[presenter] and day >= date.today() + timedelta(days=RUSH_ADVANCE):
+                        and daybefore not in note_days[presenter] and day >= date.today() + timedelta(days=RUSH_TIMEFRIME):
                     # below if could be deleted if only mrf within the cal range is provided
                     if daybefore in available_cities.keys() and location not in available_cities[daybefore]:
                         available_cities[daybefore].append(location)

@@ -25,7 +25,7 @@ PRESENTERS_LIST  = [('Andrew Crouch', 'Andrew Crouch'), ('Brad Chastain', 'Brad 
                     ('Dennis Hale', 'Dennis Hale'), ('Lourdes Nieves', 'Lourdes Nieves'),
                     ('Michael Gozdowski', 'Michael Gozdowski'), ('Steve Roberts', 'Steve Roberts')]
 
-RUSH_ADVANCE = 31
+RUSH_TIMEFRIME = 31
 
 SCHEDULER_LOGIN = {'username': 'scheduler', 'password': 'scheduler'}
 PRESENTER_LOGIN = {'username': 'presenter', 'password': 'presenter'}

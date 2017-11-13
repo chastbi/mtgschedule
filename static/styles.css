@@ -1,0 +1,19 @@
+body {
+    background-color: #f2f2f2;
+}
+
+.calendar {
+    margin=0px;
+    padding=1px;
+}
+
+.navbar {
+    background-color: rgb(159,27,52);
+    font-size: 1.25em;
+}
+
+.login {
+    font-size: .85em;
+}
+
+
