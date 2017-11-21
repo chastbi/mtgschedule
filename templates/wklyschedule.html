@@ -29,7 +29,9 @@
             and mrfs[mrf]['status'] != 'Cancelled'
             and mrfs[mrf]['type'] != 'Webinar' %}
               {% if mrfs[mrf]['presenter1'] == presenter['name'] or
-                  mrfs[mrf]['presenter2'] == presenter['name'] %}
+                  mrfs[mrf]['presenter2'] == presenter['name'] or
+                  mrfs[mrf]['presenter3'] == presenter['name'] or
+                  mrfs[mrf]['presenter4'] == presenter['name'] %}
               <a href="file:///{{ mrfs_url }}/{{ mrf }}" >
               <span style="color:navy; font-weight:bold">{{ mrfs[mrf]['clientname'] }}</span><br/>
               <span style="color:green">{{ mrfs[mrf]['city'] }}, {{ mrfs[mrf]['state'] }}</span><br/>
