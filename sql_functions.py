@@ -1,3 +1,9 @@
+"""
+
+THIS FILE IS NO LONGER USED SINCE MRFS ARE NOT SQL ENTRIES
+
+"""
+
 from mtgschedule.models import Notes
 from datetime import date, timedelta
 
